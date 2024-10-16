@@ -101,31 +101,37 @@ import java.util.Set;
 
 import org.json.JSONException;
 
-
 /**
  * Top-level component containing all other components in the program.
  *
  * @internaldoc
- * Component underlying activities and UI apps, not directly accessible to Simple programmers.
+ *              Component underlying activities and UI apps, not directly
+ *              accessible to Simple programmers.
  *
- * <p>This is the root container of any Android activity and also the
- *     superclass for Simple/Android UI applications.</p>
+ *              <p>
+ *              This is the root container of any Android activity and also the
+ *              superclass for Simple/Android UI applications.
+ *              </p>
  *
- * <p>The main form is always named "Screen1".</p>
+ *              <p>
+ *              The main form is always named "Screen1".
+ *              </p>
  *
- * <p>NOTE WELL: There are many places in the code where the name "Screen1" is
- *     directly referenced. If we ever change App Inventor to support renaming
- *     screens and Screen1 in particular, we need to make sure we find all those
- *     places and make the appropriate code changes.</p>
+ *              <p>
+ *              NOTE WELL: There are many places in the code where the name
+ *              "Screen1" is
+ *              directly referenced. If we ever change App Inventor to support
+ *              renaming
+ *              screens and Screen1 in particular, we need to make sure we find
+ *              all those
+ *              places and make the appropriate code changes.
+ *              </p>
  *
  */
 
-@DesignerComponent(version = YaVersion.FORM_COMPONENT_VERSION,
-    category = ComponentCategory.USERINTERFACE,
-    description = "Top-level component containing all other components in the program",
-    showOnPalette = false)
+@DesignerComponent(version = YaVersion.FORM_COMPONENT_VERSION, category = ComponentCategory.USERINTERFACE, description = "Top-level component containing all other components in the program", showOnPalette = false)
 @SimpleObject
-@UsesPermissions({INTERNET})
+@UsesPermissions({ INTERNET })
 public class Form extends AppInventorCompatActivity
     implements Component, ComponentContainer, HandlesEventDispatching,
     OnGlobalLayoutListener {
@@ -140,19 +146,21 @@ public class Form extends AppInventorCompatActivity
 
   public static final String ASSETS_PREFIX = "file:///android_asset/";
 
-  private static final int DEFAULT_PRIMARY_COLOR_DARK =
-      hexStringToInt(ComponentConstants.DEFAULT_PRIMARY_DARK_COLOR);
-  private static final int DEFAULT_ACCENT_COLOR =
-      hexStringToInt(ComponentConstants.DEFAULT_ACCENT_COLOR);
+  private static final int DEFAULT_PRIMARY_COLOR_DARK = hexStringToInt(ComponentConstants.DEFAULT_PRIMARY_DARK_COLOR);
+  private static final int DEFAULT_ACCENT_COLOR = hexStringToInt(ComponentConstants.DEFAULT_ACCENT_COLOR);
 
   private List<Component> allChildren = new ArrayList<>();
 
   // Keep track of the current form object.
-  // activeForm always holds the Form that is currently handling event dispatching so runtime.scm
+  // activeForm always holds the Form that is currently handling event dispatching
+  // so runtime.scm
   // can lookup symbols in the correct environment.
-  // There is at least one case where an event can be fired when the activity is not the foreground
-  // activity: if a Clock component's TimerAlwaysFires property is true, the Clock component's
-  // Timer event will still fire, even when the activity is no longer in the foreground. For this
+  // There is at least one case where an event can be fired when the activity is
+  // not the foreground
+  // activity: if a Clock component's TimerAlwaysFires property is true, the Clock
+  // component's
+  // Timer event will still fire, even when the activity is no longer in the
+  // foreground. For this
   // reason, we cannot assume that the activeForm is the foreground activity.
   protected static Form activeForm;
 
@@ -174,7 +182,7 @@ public class Form extends AppInventorCompatActivity
   // Backing for background color
   private int backgroundColor;
 
-  // Information string the app creator can set.  It will be shown when
+  // Information string the app creator can set. It will be shown when
   // "about this application" menu item is selected.
   private String aboutScreen;
   private boolean showStatusBar = true;
@@ -251,8 +259,10 @@ public class Form extends AppInventorCompatActivity
   private static long minimumToastWait = 10000000000L; // 10 seconds
   private long lastToastTime = System.nanoTime() - minimumToastWait;
 
-  // In a multiple screen application, when a secondary screen is opened, nextFormName is set to
-  // the name of the secondary screen. It is saved so that it can be passed to the OtherScreenClosed
+  // In a multiple screen application, when a secondary screen is opened,
+  // nextFormName is set to
+  // the name of the secondary screen. It is saved so that it can be passed to the
+  // OtherScreenClosed
   // event.
   private String nextFormName;
 
@@ -271,11 +281,10 @@ public class Form extends AppInventorCompatActivity
   // FragmentActivity is added in future.
   public static final int MAX_PERMISSION_NONCE = 100000;
 
-
-
   public static class PercentStorageRecord {
     public enum Dim {
-      HEIGHT, WIDTH };
+      HEIGHT, WIDTH
+    };
 
     public PercentStorageRecord(AndroidViewComponent component, int length, Dim dim) {
       this.component = component;
@@ -287,6 +296,7 @@ public class Form extends AppInventorCompatActivity
     int length;
     Dim dim;
   }
+
   // private ArrayList<PercentStorageRecord> dimChanges = new ArrayList();
   private LinkedHashMap<Integer, PercentStorageRecord> dimChanges = new LinkedHashMap();
 
@@ -300,6 +310,7 @@ public class Form extends AppInventorCompatActivity
       MultiDex.install(ourForm, true); // Force installation
       return true;
     }
+
     @Override
     protected void onPostExecute(Boolean v) {
       ourForm.onCreateFinish();
@@ -331,9 +342,12 @@ public class Form extends AppInventorCompatActivity
     if (!_initialized && formName.equals("Screen1")) {
       Log.d(LOG_TAG, "MULTI: _initialized = " + _initialized + " formName = " + formName);
       _initialized = true;
-      // Note that we always consult ReplApplication even if we are not the Repl (Companion)
-      // this is subtle. When ReplApplication isn't directly used, the "installed" property
-      // defaults to ture, which means we can continue. The MultiDexApplication which is
+      // Note that we always consult ReplApplication even if we are not the Repl
+      // (Companion)
+      // this is subtle. When ReplApplication isn't directly used, the "installed"
+      // property
+      // defaults to ture, which means we can continue. The MultiDexApplication which
+      // is
       // used in a non-Companion context will always do the full install
       if (ReplApplication.installed) {
         Log.d(LOG_TAG, "MultiDex already installed.");
@@ -384,7 +398,8 @@ public class Form extends AppInventorCompatActivity
 
     fullScreenVideoUtil = new FullScreenVideoUtil(this, androidUIHandler);
 
-    // Set soft keyboard to not cover the focused UI element, e.g., when you are typing
+    // Set soft keyboard to not cover the focused UI element, e.g., when you are
+    // typing
     // into a textbox near the bottom of the screen.
     WindowManager.LayoutParams params = getWindow().getAttributes();
     int softInputMode = params.softInputMode;
@@ -394,10 +409,14 @@ public class Form extends AppInventorCompatActivity
     // Add application components to the form
     $define();
 
-    // Special case for Event.Initialize(): all other initialize events are triggered after
-    // completing the constructor. This doesn't work for Android apps though because this method
-    // is called after the constructor completes and therefore the Initialize event would run
-    // before initialization finishes. Instead the compiler suppresses the invocation of the
+    // Special case for Event.Initialize(): all other initialize events are
+    // triggered after
+    // completing the constructor. This doesn't work for Android apps though because
+    // this method
+    // is called after the constructor completes and therefore the Initialize event
+    // would run
+    // before initialization finishes. Instead the compiler suppresses the
+    // invocation of the
     // event and leaves it up to the library implementation.
     Initialize();
   }
@@ -421,10 +440,10 @@ public class Form extends AppInventorCompatActivity
     } else {
       ActionBar(themeHelper.hasActionBar());
     }
-    Scrollable(false);       // frameLayout is created in Scrollable()
+    Scrollable(false); // frameLayout is created in Scrollable()
     HighContrast(false);
     BigDefaultText(false);
-    Sizing("Responsive");    // Note: Only the Screen1 value is used as this is per-project
+    Sizing("Responsive"); // Note: Only the Screen1 value is used as this is per-project
     AboutScreen("");
     BackgroundImage("");
     AlignHorizontal(ComponentConstants.GRAVITY_LEFT);
@@ -432,7 +451,7 @@ public class Form extends AppInventorCompatActivity
     Title("");
     ShowStatusBar(true);
     TitleVisible(true);
-    ShowListsAsJson(true);  // Note: Only the Screen1 value is used as this is per-project
+    ShowListsAsJson(true); // Note: Only the Screen1 value is used as this is per-project
     ActionBar(false);
     AccentColor(DEFAULT_ACCENT_COLOR);
     PrimaryColor(DEFAULT_PRIMARY_COLOR);
@@ -451,7 +470,8 @@ public class Form extends AppInventorCompatActivity
     if (newOrientation == Configuration.ORIENTATION_LANDSCAPE ||
         newOrientation == Configuration.ORIENTATION_PORTRAIT) {
       // At this point, the screen has not be resized to match the new orientation.
-      // We use Handler.post so that we'll dispatch the ScreenOrientationChanged event after the
+      // We use Handler.post so that we'll dispatch the ScreenOrientationChanged event
+      // after the
       // screen has been resized to match the new orientation.
 
       androidUIHandler.post(new Runnable() {
@@ -472,14 +492,14 @@ public class Form extends AppInventorCompatActivity
             recomputeLayout();
             final FrameLayout savedLayout = frameLayout;
             androidUIHandler.postDelayed(new Runnable() {
-                public void run() {
-                  if (savedLayout != null) {
-                    savedLayout.invalidate();
-                  }
+              public void run() {
+                if (savedLayout != null) {
+                  savedLayout.invalidate();
                 }
-              }, 100);          // Redraw the whole screen in 1/10 second
-                                // we do this to avoid screen artifacts left
-                                // left by the Android runtime.
+              }
+            }, 100); // Redraw the whole screen in 1/10 second
+                     // we do this to avoid screen artifacts left
+                     // left by the Android runtime.
             ScreenOrientationChanged();
           } else {
             // Try again later.
@@ -490,26 +510,26 @@ public class Form extends AppInventorCompatActivity
     }
   }
 
-// What's this code?
-//
-// There is either an App Inventor bug, or Android bug (likely both)
-// that results in the contents of the screen being rendered "too
-// tall" on some devices when the soft keyboard is toggled from
-// displayed to hidden. This results in the bottom of the App being
-// cut-off. This only happens when we are in "Fixed" mode where we
-// provide a ScaledFrameLayout whose job is to scale the app to fill
-// the display of whatever device it is running on ("big phone mode").
-//
-// The code below is triggered on every major layout change. It
-// compares the size of the device window with the height of the
-// displayed content. Based on the difference, we can tell if the
-// keyboard is open or closed. We detect the transition from open to
-// closed and iff we are in "Fixed" mode (sComptabilityMode = true) we
-// trigger a recomputation of the entire apps layout after a delay of
-// 100ms (which seems to be required, for reasons we don't quite
-// understand).
-//
-// This code is not really a "fix" but more of a "workaround."
+  // What's this code?
+  //
+  // There is either an App Inventor bug, or Android bug (likely both)
+  // that results in the contents of the screen being rendered "too
+  // tall" on some devices when the soft keyboard is toggled from
+  // displayed to hidden. This results in the bottom of the App being
+  // cut-off. This only happens when we are in "Fixed" mode where we
+  // provide a ScaledFrameLayout whose job is to scale the app to fill
+  // the display of whatever device it is running on ("big phone mode").
+  //
+  // The code below is triggered on every major layout change. It
+  // compares the size of the device window with the height of the
+  // displayed content. Based on the difference, we can tell if the
+  // keyboard is open or closed. We detect the transition from open to
+  // closed and iff we are in "Fixed" mode (sComptabilityMode = true) we
+  // trigger a recomputation of the entire apps layout after a delay of
+  // 100ms (which seems to be required, for reasons we don't quite
+  // understand).
+  //
+  // This code is not really a "fix" but more of a "workaround."
 
   @Override
   public void onGlobalLayout() {
@@ -522,7 +542,7 @@ public class Form extends AppInventorCompatActivity
     float diffPercent = (float) heightDiff / (float) totalHeight;
     Log.d(LOG_TAG, "onGlobalLayout(): diffPercent = " + diffPercent);
 
-    if(diffPercent < 0.25) {    // 0.25 is kind of arbitrary
+    if (diffPercent < 0.25) { // 0.25 is kind of arbitrary
       Log.d(LOG_TAG, "keyboard hidden!");
       if (keyboardShown) {
         keyboardShown = false;
@@ -569,10 +589,10 @@ public class Form extends AppInventorCompatActivity
         requestCode + ", resultCode = " + resultCode);
     if (requestCode == SWITCH_FORM_REQUEST_CODE) {
       // Assume this is a multiple screen application, and a secondary
-      // screen has closed.  Process the result as a JSON-encoded string.
+      // screen has closed. Process the result as a JSON-encoded string.
       // This can also happen if the user presses the back button, in which case
       // there's no data.
-     String resultString;
+      String resultString;
       if (data != null && data.hasExtra(RESULT_NAME)) {
         resultString = data.getStringExtra(RESULT_NAME);
       } else {
@@ -582,7 +602,8 @@ public class Form extends AppInventorCompatActivity
       // nextFormName was set when this screen opened the secondary screen
       OtherScreenClosed(nextFormName, decodedResult);
     } else {
-      // Another component (such as a ListPicker, ActivityStarter, etc) is expecting this result.
+      // Another component (such as a ListPicker, ActivityStarter, etc) is expecting
+      // this result.
       ActivityResultListener component = activityResultMap.get(requestCode);
       if (component != null) {
         component.resultReturned(requestCode, resultCode, data);
@@ -599,7 +620,7 @@ public class Form extends AppInventorCompatActivity
 
   // functionName is a string to include in the error message that will be shown
   // if the JSON decoding fails
-  private  static Object decodeJSONStringForForm(String jsonString, String functionName) {
+  private static Object decodeJSONStringForForm(String jsonString, String functionName) {
     Log.i(LOG_TAG, "decodeJSONStringForForm -- decoding JSON representation:" + jsonString);
     Object valueFromJSON = "";
     try {
@@ -607,7 +628,8 @@ public class Form extends AppInventorCompatActivity
       Log.i(LOG_TAG, "decodeJSONStringForForm -- got decoded JSON:" + valueFromJSON.toString());
     } catch (JSONException e) {
       activeForm.dispatchErrorOccurredEvent(activeForm, functionName,
-          // showing the start value here will produce an ugly error on the phone, but it's
+          // showing the start value here will produce an ugly error on the phone, but
+          // it's
           // more useful than not showing the value
           ErrorMessages.ERROR_SCREEN_BAD_VALUE_RECEIVED, jsonString);
     }
@@ -621,11 +643,14 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Register a {@code listener} for the given {@code requestCode}. This is used to simulate
-   * broadcast receivers as a workaround for PhoneCall and Texting handlers related to initiating
+   * Register a {@code listener} for the given {@code requestCode}. This is used
+   * to simulate
+   * broadcast receivers as a workaround for PhoneCall and Texting handlers
+   * related to initiating
    * calls/messages.
    *
-   * @param listener The object to report activity results to for the given request code
+   * @param listener The object to report activity results to for the given
+   *                 request code
    */
   public void registerForActivityResult(ActivityResultListener listener, int requestCode) {
     Set<ActivityResultListener> listeners = activityResultMultiMap.get(requestCode);
@@ -648,8 +673,7 @@ public class Form extends AppInventorCompatActivity
     }
 
     // Remove any simulated broadcast receivers
-    Iterator<Map.Entry<Integer, Set<ActivityResultListener>>> it =
-        activityResultMultiMap.entrySet().iterator();
+    Iterator<Map.Entry<Integer, Set<ActivityResultListener>>> it = activityResultMultiMap.entrySet().iterator();
     while (it.hasNext()) {
       Map.Entry<Integer, Set<ActivityResultListener>> entry = it.next();
       entry.getValue().remove(listener);
@@ -663,8 +687,9 @@ public class Form extends AppInventorCompatActivity
     // We first make a copy of the existing dimChanges list
     // because while we are replaying it, it is being appended to
     Log.d(LOG_TAG, "ReplayFormOrientation()");
-    LinkedHashMap<Integer, PercentStorageRecord> temp = (LinkedHashMap<Integer, PercentStorageRecord>) dimChanges.clone();
-    dimChanges.clear();         // Empties it out
+    LinkedHashMap<Integer, PercentStorageRecord> temp = (LinkedHashMap<Integer, PercentStorageRecord>) dimChanges
+        .clone();
+    dimChanges.clear(); // Empties it out
     // Iterate temp
     for (PercentStorageRecord r : temp.values()) {
       if (r.dim == PercentStorageRecord.Dim.HEIGHT) {
@@ -704,7 +729,8 @@ public class Form extends AppInventorCompatActivity
     Log.i(LOG_TAG, "Form " + formName + " got onResume");
     activeForm = this;
 
-    // If applicationIsBeingClosed is true, call closeApplication() immediately to continue
+    // If applicationIsBeingClosed is true, call closeApplication() immediately to
+    // continue
     // unwinding through all forms of a multi-screen application.
     if (applicationIsBeingClosed) {
       closeApplication();
@@ -726,7 +752,7 @@ public class Form extends AppInventorCompatActivity
 
   /**
    * An app can register to be notified when App Inventor's Initialize
-   * block has fired.  They will be called in Initialize().
+   * block has fired. They will be called in Initialize().
    *
    * @param component
    */
@@ -789,7 +815,8 @@ public class Form extends AppInventorCompatActivity
       onDestroyListener.onDestroy();
     }
 
-    // call super method at the end to delegate the destruction of the app to the parent
+    // call super method at the end to delegate the destruction of the app to the
+    // parent
     super.onDestroy();
   }
 
@@ -806,41 +833,43 @@ public class Form extends AppInventorCompatActivity
   }
 
   public Dialog onCreateDialog(int id) {
-    switch(id) {
-    case FullScreenVideoUtil.FULLSCREEN_VIDEO_DIALOG_FLAG:
-      return fullScreenVideoUtil.createFullScreenVideoDialog();
-    default:
-      return super.onCreateDialog(id);
+    switch (id) {
+      case FullScreenVideoUtil.FULLSCREEN_VIDEO_DIALOG_FLAG:
+        return fullScreenVideoUtil.createFullScreenVideoDialog();
+      default:
+        return super.onCreateDialog(id);
     }
   }
 
   public void onPrepareDialog(int id, Dialog dialog) {
-    switch(id) {
-    case FullScreenVideoUtil.FULLSCREEN_VIDEO_DIALOG_FLAG:
-      fullScreenVideoUtil.prepareFullScreenVideoDialog(dialog);
-      break;
-    default:
-      super.onPrepareDialog(id, dialog);
+    switch (id) {
+      case FullScreenVideoUtil.FULLSCREEN_VIDEO_DIALOG_FLAG:
+        fullScreenVideoUtil.prepareFullScreenVideoDialog(dialog);
+        break;
+      default:
+        super.onPrepareDialog(id, dialog);
     }
   }
 
   /**
    * Compiler-generated method to initialize and add application components to
-   * the form.  We just provide an implementation here to artificially make
+   * the form. We just provide an implementation here to artificially make
    * this class concrete so that it is included in the documentation and
    * App Inventor component definition file generated by
    * {@link com.google.appinventor.components.scripts.DocumentationGenerator} and
    * {@link com.google.appinventor.components.scripts.ComponentDescriptorGenerator},
-   * respectively.  The actual implementation appears in {@code runtime.scm}.
+   * respectively. The actual implementation appears in {@code runtime.scm}.
    */
-  protected void $define() {    // This must be declared protected because we are called from Screen1 which subclasses
-                                // us and isn't in our package.
+  protected void $define() { // This must be declared protected because we are called from Screen1 which
+                             // subclasses
+                             // us and isn't in our package.
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean canDispatchEvent(Component component, String eventName) {
-    // Events can only be dispatched after the screen initialized event has completed.
+    // Events can only be dispatched after the screen initialized event has
+    // completed.
     boolean canDispatch = screenInitialized ||
         (component == this && eventName.equals("Initialize"));
 
@@ -859,7 +888,7 @@ public class Form extends AppInventorCompatActivity
    * App Inventor component definition file generated by
    * {@link com.google.appinventor.components.scripts.DocumentationGenerator} and
    * {@link com.google.appinventor.components.scripts.ComponentDescriptorGenerator},
-   * respectively.  The actual implementation appears in {@code runtime.scm}.
+   * respectively. The actual implementation appears in {@code runtime.scm}.
    */
   @Override
   public boolean dispatchEvent(Component component, String componentName, String eventName,
@@ -876,7 +905,8 @@ public class Form extends AppInventorCompatActivity
   @SimpleEvent(description = "The Initialize event is run when the Screen starts and is only run "
       + "once per screen.")
   public void Initialize() {
-    // Dispatch the Initialize event only after the screen's width and height are no longer zero.
+    // Dispatch the Initialize event only after the screen's width and height are no
+    // longer zero.
     androidUIHandler.post(new Runnable() {
       public void run() {
         if (frameLayout != null && frameLayout.getWidth() != 0 && frameLayout.getHeight() != 0) {
@@ -888,12 +918,12 @@ public class Form extends AppInventorCompatActivity
           }
           screenInitialized = true;
 
-          //  Call all apps registered to be notified when Initialize Event is dispatched
+          // Call all apps registered to be notified when Initialize Event is dispatched
           for (OnInitializeListener onInitializeListener : onInitializeListeners) {
             onInitializeListener.onInitialize();
           }
           if (activeForm instanceof ReplForm) { // We are the Companion
-            ((ReplForm)activeForm).HandleReturnValues();
+            ((ReplForm) activeForm).HandleReturnValues();
           }
         } else {
           // Try again later.
@@ -911,8 +941,7 @@ public class Form extends AppInventorCompatActivity
     EventDispatcher.dispatchEvent(this, "ScreenOrientationChanged");
   }
 
-  @SimpleEvent(
-      description = "Event raised when an error occurs. Only some errors will " +
+  @SimpleEvent(description = "Event raised when an error occurs. Only some errors will " +
       "raise this condition.  For those errors, the system will show a notification " +
       "by default.  You can use this event handler to prescribe an error " +
       "behavior different than the default.")
@@ -925,16 +954,15 @@ public class Form extends AppInventorCompatActivity
         ", messages = " + message);
     if ((!(EventDispatcher.dispatchEvent(
         this, "ErrorOccurred", component, functionName, errorNumber, message)))
-        && screenInitialized)  {
+        && screenInitialized) {
       // If dispatchEvent returned false, then no user-supplied error handler was run.
       // If in addition, the screen initializer was run, then we assume that the
-      // user did not provide an error handler.   In this case, we run a default
+      // user did not provide an error handler. In this case, we run a default
       // error handler, namely, showing a notification to the end user of the app.
       // The app writer can override this by providing an error handler.
       new Notifier(this).ShowAlert("Error " + errorNumber + ": " + message);
     }
   }
-
 
   public void ErrorOccurredDialog(Component component, String functionName, int errorNumber,
       String message, String title, String buttonText) {
@@ -945,10 +973,10 @@ public class Form extends AppInventorCompatActivity
         ", messages = " + message);
     if ((!(EventDispatcher.dispatchEvent(
         this, "ErrorOccurred", component, functionName, errorNumber, message)))
-        && screenInitialized)  {
+        && screenInitialized) {
       // If dispatchEvent returned false, then no user-supplied error handler was run.
       // If in addition, the screen initializer was run, then we assume that the
-      // user did not provide an error handler.   In this case, we run a default
+      // user did not provide an error handler. In this case, we run a default
       // error handler, namely, showing a message dialog to the end user of the app.
       // The app writer can override this by providing an error handler.
       new Notifier(this).ShowMessageDialog("Error " + errorNumber + ": " + message, title, buttonText);
@@ -956,12 +984,13 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Schedules a run of the PermissionDenied event handler for after the current stack of blocks finishes executing
+   * Schedules a run of the PermissionDenied event handler for after the current
+   * stack of blocks finishes executing
    * on the UI thread.
    *
-   * @param component The component that needs the denied permission.
+   * @param component    The component that needs the denied permission.
    * @param functionName The function that triggers the denied permission.
-   * @param exception The PermissionDenied exception
+   * @param exception    The PermissionDenied exception
    */
   public void dispatchPermissionDeniedEvent(final Component component, final String functionName,
       final PermissionException exception) {
@@ -970,11 +999,12 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Schedules a run of the PermissionDenied event handler for after the current stack of blocks finishes executing
+   * Schedules a run of the PermissionDenied event handler for after the current
+   * stack of blocks finishes executing
    * on the UI thread.
    *
-   * @param component The component that needs the denied permission.
-   * @param functionName The function that triggers the denied permission.
+   * @param component      The component that needs the denied permission.
+   * @param functionName   The function that triggers the denied permission.
    * @param permissionName The name of the needed permission.
    */
   public void dispatchPermissionDeniedEvent(final Component component, final String functionName,
@@ -998,8 +1028,10 @@ public class Form extends AppInventorCompatActivity
   }
 
   // This is like dispatchErrorOccurredEvent, except that it defaults to showing
-  // a message dialog rather than an alert.   The app writer can override either of these behaviors,
-  // but using the event dialog version frees the app writer from the need to explicitly override
+  // a message dialog rather than an alert. The app writer can override either of
+  // these behaviors,
+  // but using the event dialog version frees the app writer from the need to
+  // explicitly override
   // the alert behavior in the case
   // where a message dialog is what's generally needed.
   public void dispatchErrorOccurredEventDialog(final Component component, final String functionName,
@@ -1019,7 +1051,7 @@ public class Form extends AppInventorCompatActivity
   }
 
   // This runtimeFormErrorOccurred can be called from runtime.scm in
-  // the case of a runtime error.  The event is always signaled in the
+  // the case of a runtime error. The event is always signaled in the
   // active form. It triggers the normal Form error system which fires
   // the ErrorOccurred event. This can be handled by the App Inventor
   // programmer. If it isn't a Notifier (toast) is displayed showing
@@ -1034,9 +1066,11 @@ public class Form extends AppInventorCompatActivity
   /**
    * Event to handle when the app user has denied a needed permission.
    *
-   * @param component The component that needs the denied permission.
-   * @param functionName The property or method of the component that needs the denied permission.
-   * @param permissionName The name of the permission that has been denied by the user.
+   * @param component      The component that needs the denied permission.
+   * @param functionName   The property or method of the component that needs the
+   *                       denied permission.
+   * @param permissionName The name of the permission that has been denied by the
+   *                       user.
    */
   @SimpleEvent
   public void PermissionDenied(
@@ -1044,7 +1078,8 @@ public class Form extends AppInventorCompatActivity
       String functionName,
       @Options(Permission.class) String permissionName) {
     if (permissionName.startsWith("android.permission.")) {
-      // Forward compatibility with iOS so that we don't have to pass around Android-specific names
+      // Forward compatibility with iOS so that we don't have to pass around
+      // Android-specific names
       permissionName = permissionName.replace("android.permission.", "");
     }
     if (!EventDispatcher.dispatchEvent(this, "PermissionDenied", component, functionName, permissionName)) {
@@ -1053,33 +1088,43 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Event to handle when the app user has granted a needed permission. This event is only run when permission is
+   * Event to handle when the app user has granted a needed permission. This event
+   * is only run when permission is
    * granted in response to the {@link #AskForPermission(String)} method.
    *
-   * @param permissionName The name of the permission that was granted by the user.
+   * @param permissionName The name of the permission that was granted by the
+   *                       user.
    */
   @SimpleEvent(description = "Event to handle when the app user has granted a needed permission. "
       + "This event is only run when permission is granted in response to the AskForPermission "
       + "method.")
   public void PermissionGranted(@Options(Permission.class) String permissionName) {
     if (permissionName.startsWith("android.permission.")) {
-      // Forward compatibility with iOS so that we don't have to pass around Android-specific names
+      // Forward compatibility with iOS so that we don't have to pass around
+      // Android-specific names
       permissionName = permissionName.replace("android.permission.", "");
     }
     EventDispatcher.dispatchEvent(this, "PermissionGranted", permissionName);
   }
 
   /**
-   * Ask the user to grant access to a sensitive permission, such as `ACCESS_FINE_LOCATION`. This
-   * block is typically used as part of a {@link #PermissionDenied(Component, String, String)}
+   * Ask the user to grant access to a sensitive permission, such as
+   * `ACCESS_FINE_LOCATION`. This
+   * block is typically used as part of a
+   * {@link #PermissionDenied(Component, String, String)}
    * event to ask for permission. If the user grants permission, the
-   * {@link #PermissionGranted(String)} event will be run. If the user denies permission, the
+   * {@link #PermissionGranted(String)} event will be run. If the user denies
+   * permission, the
    * {@link #PermissionDenied(Component, String, String)} event will be run.
    *
-   *   **Note:** It is a best practice to only ask for permissions at the time they are needed,
-   * which App Inventor components will do when necessary. You should not use `AskForPermission`
-   * in your {@link #Initialize()} event unless access to that permission is critical to the
-   * behavior of your app and is needed up front, such as location services for a navigation app.
+   * **Note:** It is a best practice to only ask for permissions at the time they
+   * are needed,
+   * which App Inventor components will do when necessary. You should not use
+   * `AskForPermission`
+   * in your {@link #Initialize()} event unless access to that permission is
+   * critical to the
+   * behavior of your app and is needed up front, such as location services for a
+   * navigation app.
    *
    * @param permissionName The name of the permission to request from the user.
    */
@@ -1100,14 +1145,12 @@ public class Form extends AppInventorCompatActivity
     });
   }
 
-
   /**
    * HighContrast property getter method.
    *
-   * @return  true if we want high constrast mode
+   * @return true if we want high constrast mode
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-          description = "When checked, we will use high contrast mode")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "When checked, we will use high contrast mode")
   public boolean HighContrast() {
     return highContrast;
   }
@@ -1115,15 +1158,14 @@ public class Form extends AppInventorCompatActivity
   /**
    * When checked, there will be high contrast mode turned on.
    *
-   * @param highContrast  true if the high contrast mode is on
+   * @param highContrast true if the high contrast mode is on
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-          defaultValue = "False")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "False")
   @SimpleProperty
   public void HighContrast(boolean highContrast) {
 
-    //this.scrollable = scrollable;
-    this.highContrast=highContrast;
+    // this.scrollable = scrollable;
+    this.highContrast = highContrast;
     setHighContrastRecursive(this, highContrast);
     recomputeLayout();
   }
@@ -1138,14 +1180,12 @@ public class Form extends AppInventorCompatActivity
     }
   }
 
-
   /**
    * BigDefaultText property getter method.
    *
-   * @return  true if we are in the big text mode
+   * @return true if we are in the big text mode
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-          description = "When checked, we will use high contrast mode")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "When checked, we will use high contrast mode")
   public boolean BigDefaultText() {
     return bigDefaultText;
   }
@@ -1153,19 +1193,17 @@ public class Form extends AppInventorCompatActivity
   /**
    * When checked, all default size text will be increased in size.
    *
-   * @param bigDefaultText  true if the big text mode is on
+   * @param bigDefaultText true if the big text mode is on
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-          defaultValue = "False")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "False")
   @SimpleProperty
   public void BigDefaultText(boolean bigDefaultText) {
 
-    //this.scrollable = scrollable;
-    this.bigDefaultText=bigDefaultText;
+    // this.scrollable = scrollable;
+    this.bigDefaultText = bigDefaultText;
     setBigDefaultTextRecursive(this, bigDefaultText);
     recomputeLayout();
   }
-
 
   private static void setBigDefaultTextRecursive(ComponentContainer container, boolean enabled) {
     for (Component child : container.getChildren()) {
@@ -1180,36 +1218,38 @@ public class Form extends AppInventorCompatActivity
   /**
    * Asks the user to grant access to a sensitive permission.
    */
-  @SuppressWarnings({"RegularMethodName", "unused"})
+  @SuppressWarnings({ "RegularMethodName", "unused" })
   public void AskForPermissionAbstract(Permission permission) {
-    // Usually when we are upgrading components to use dropdown blocks we make the Abstract function
-    // the "true" function. But in this case I think it makes more sense to use the concrete one.
+    // Usually when we are upgrading components to use dropdown blocks we make the
+    // Abstract function
+    // the "true" function. But in this case I think it makes more sense to use the
+    // concrete one.
     AskForPermission(permission.toUnderlyingValue());
   }
 
   /**
    * Scrollable property getter method.
    *
-   * @return  true if the screen is vertically scrollable
+   * @return true if the screen is vertically scrollable
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-    description = "When checked, there will be a vertical scrollbar on the "
-    + "screen, and the height of the application can exceed the physical "
-    + "height of the device. When unchecked, the application height is "
-    + "constrained to the height of the device.")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "When checked, there will be a vertical scrollbar on the "
+      + "screen, and the height of the application can exceed the physical "
+      + "height of the device. When unchecked, the application height is "
+      + "constrained to the height of the device.")
   public boolean Scrollable() {
     return scrollable;
   }
 
   /**
-   * When checked, there will be a vertical scrollbar on the screen, and the height of the
-   * application can exceed the physical height of the device. When unchecked, the application
+   * When checked, there will be a vertical scrollbar on the screen, and the
+   * height of the
+   * application can exceed the physical height of the device. When unchecked, the
+   * application
    * height is constrained to the height of the device.
    *
-   * @param scrollable  true if the screen should be vertically scrollable
+   * @param scrollable true if the screen should be vertically scrollable
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-    defaultValue = "False")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "False")
   @SimpleProperty
   public void Scrollable(boolean scrollable) {
     if (this.scrollable == scrollable && frameLayout != null) {
@@ -1232,8 +1272,7 @@ public class Form extends AppInventorCompatActivity
     if (needsTitleBar) {
       frameWithTitle.addView(titleBar, new ViewGroup.LayoutParams(
           ViewGroup.LayoutParams.MATCH_PARENT,
-          ViewGroup.LayoutParams.WRAP_CONTENT
-      ));
+          ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     // Layout
@@ -1241,7 +1280,7 @@ public class Form extends AppInventorCompatActivity
     // | [======titleBar======] |
     // | ------scaleLayout----- |
     // | | ----frameLayout--- | |
-    // | | |                | | |
+    // | | | | | |
     // | | ------------------ | |
     // | ---------------------- |
     // --------------------------
@@ -1249,8 +1288,10 @@ public class Form extends AppInventorCompatActivity
     if (scrollable) {
       frameLayout = new ScrollView(this);
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        // Nougat changes how ScrollView handles its content size. Here we force it to fill the viewport
-        // in order to preserve the layout of apps developed prior to N that rely on the old behavior.
+        // Nougat changes how ScrollView handles its content size. Here we force it to
+        // fill the viewport
+        // in order to preserve the layout of apps developed prior to N that rely on the
+        // old behavior.
         ((ScrollView) frameLayout).setFillViewport(true);
       }
     } else {
@@ -1294,7 +1335,7 @@ public class Form extends AppInventorCompatActivity
   /**
    * BackgroundColor property getter method.
    *
-   * @return  background RGB color with alpha
+   * @return background RGB color with alpha
    */
   @SimpleProperty(category = PropertyCategory.APPEARANCE)
   @IsColor
@@ -1304,13 +1345,13 @@ public class Form extends AppInventorCompatActivity
 
   /**
    * Specifies the `%type%`'s background color as an alpha-red-green-blue
-   * integer.  If an {@link #BackgroundImage(String)} has been set, the color
-   * change will not be visible until the {@link #BackgroundImage(String)} is removed.
+   * integer. If an {@link #BackgroundImage(String)} has been set, the color
+   * change will not be visible until the {@link #BackgroundImage(String)} is
+   * removed.
    *
-   * @param argb  background RGB color with alpha
+   * @param argb background RGB color with alpha
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR,
-      defaultValue = Component.DEFAULT_VALUE_COLOR_WHITE)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR, defaultValue = Component.DEFAULT_VALUE_COLOR_WHITE)
   @SimpleProperty
   public void BackgroundColor(int argb) {
     if (argb == Component.COLOR_DEFAULT) {
@@ -1319,38 +1360,36 @@ public class Form extends AppInventorCompatActivity
       usesDefaultBackground = false;
       backgroundColor = argb;
     }
-    // setBackground(viewLayout.getLayoutManager()); // Doesn't seem necessary anymore
+    // setBackground(viewLayout.getLayoutManager()); // Doesn't seem necessary
+    // anymore
     setBackground(frameLayout);
   }
 
   /**
    * Returns the path of the background image.
    *
-   * @return  the path of the background image
+   * @return the path of the background image
    */
-  @SimpleProperty(
-      category = PropertyCategory.APPEARANCE,
-      description = "The screen background image.")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "The screen background image.")
   public String BackgroundImage() {
     return backgroundImagePath;
   }
 
-
   /**
-   * Specifies the path of the `%type%`'s background image. If there is both an `BackgroundImage`
-   * and a {@link #BackgroundColor()} specified, only the `BackgroundImage` will be visible.
+   * Specifies the path of the `%type%`'s background image. If there is both an
+   * `BackgroundImage`
+   * and a {@link #BackgroundColor()} specified, only the `BackgroundImage` will
+   * be visible.
    *
    * @internaldoc
-   * See {@link MediaUtil#determineMediaSource} for information about what
-   * a path can be.
+   *              See {@link MediaUtil#determineMediaSource} for information about
+   *              what
+   *              a path can be.
    *
    * @param path the path of the background image
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_ASSET,
-      defaultValue = "")
-  @SimpleProperty(
-      category = PropertyCategory.APPEARANCE,
-      description = "The screen background image.")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_ASSET, defaultValue = "")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "The screen background image.")
   public void BackgroundImage(@Asset String path) {
     backgroundImagePath = (path == null) ? "" : path;
 
@@ -1370,8 +1409,7 @@ public class Form extends AppInventorCompatActivity
    *
    * @param scope the desired scope to use by default during file accesses
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_FILESCOPE,
-      defaultValue = "App")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_FILESCOPE, defaultValue = "App")
   @SimpleProperty(category = PropertyCategory.GENERAL, userVisible = false)
   public void DefaultFileScope(FileScope scope) {
     this.defaultFileScope = scope;
@@ -1384,10 +1422,9 @@ public class Form extends AppInventorCompatActivity
   /**
    * Title property getter method.
    *
-   * @return  form caption
+   * @return form caption
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-      description = "The caption for the form, which apears in the title bar")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "The caption for the form, which apears in the title bar")
   public String Title() {
     return getTitle().toString();
   }
@@ -1396,10 +1433,9 @@ public class Form extends AppInventorCompatActivity
    * Title property setter method: sets a new caption for the form in the
    * form's title bar.
    *
-   * @param title  new form caption
+   * @param title new form caption
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING,
-      defaultValue = "")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING, defaultValue = "")
   @SimpleProperty
   public void Title(String title) {
     this.title = title;
@@ -1410,14 +1446,12 @@ public class Form extends AppInventorCompatActivity
     updateTitle();
   }
 
-
   /**
    * AboutScreen property getter method.
    *
-   * @return  AboutScreen string
+   * @return AboutScreen string
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-      description = "Information about the screen.  It appears when \"About this Application\" "
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "Information about the screen.  It appears when \"About this Application\" "
       + "is selected from the system menu. Use it to inform people about your app.  In multiple "
       + "screen apps, each screen has its own AboutScreen info.")
   public String AboutScreen() {
@@ -1425,14 +1459,15 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Information about the screen. It appears when "About this Application" is selected from the
-   * system menu. Use it to tell users about your app. In multiple screen apps, each screen has its
+   * Information about the screen. It appears when "About this Application" is
+   * selected from the
+   * system menu. Use it to tell users about your app. In multiple screen apps,
+   * each screen has its
    * own `AboutScreen` info.
    *
    * @param aboutScreen content to be displayed in aboutApp
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_TEXTAREA,
-      defaultValue = "")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_TEXTAREA, defaultValue = "")
   @SimpleProperty
   public void AboutScreen(String aboutScreen) {
     this.aboutScreen = aboutScreen;
@@ -1441,22 +1476,21 @@ public class Form extends AppInventorCompatActivity
   /**
    * TitleVisible property getter method.
    *
-   * @return  showTitle boolean
+   * @return showTitle boolean
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-      description = "The title bar is the top gray bar on the screen. This property reports whether the title bar is visible.")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "The title bar is the top gray bar on the screen. This property reports whether the title bar is visible.")
   public boolean TitleVisible() {
     return showTitle;
   }
 
   /**
-   * The title bar is the top gray bar on the screen. This property reports whether the title bar
+   * The title bar is the top gray bar on the screen. This property reports
+   * whether the title bar
    * is visible.
    *
    * @param show boolean
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-      defaultValue = "True")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True")
   @SimpleProperty(category = PropertyCategory.APPEARANCE)
   public void TitleVisible(boolean show) {
     if (show != showTitle) {
@@ -1472,22 +1506,21 @@ public class Form extends AppInventorCompatActivity
   /**
    * ShowStatusBar property getter method.
    *
-   * @return  showStatusBar boolean
+   * @return showStatusBar boolean
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-      description = "The status bar is the topmost bar on the screen. This property reports whether the status bar is visible.")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "The status bar is the topmost bar on the screen. This property reports whether the status bar is visible.")
   public boolean ShowStatusBar() {
     return showStatusBar;
   }
 
   /**
-   * The status bar is the topmost bar on the screen. This property reports whether the status bar
+   * The status bar is the topmost bar on the screen. This property reports
+   * whether the status bar
    * is visible.
    *
    * @param show boolean
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-      defaultValue = "True")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True")
   @SimpleProperty(category = PropertyCategory.APPEARANCE)
   public void ShowStatusBar(boolean show) {
     if (show != showStatusBar) {
@@ -1504,16 +1537,17 @@ public class Form extends AppInventorCompatActivity
 
   /**
    * The requested screen orientation. Commonly used values are
-      unspecified (-1), landscape (0), portrait (1), sensor (4), and user (2).  " +
-      "See the Android developer documentation for ActivityInfo.Screen_Orientation for the " +
-      "complete list of possible settings.
+   * unspecified (-1), landscape (0), portrait (1), sensor (4), and user (2). " +
+   * "See the Android developer documentation for ActivityInfo.Screen_Orientation
+   * for the " +
+   * "complete list of possible settings.
    *
    * ScreenOrientation property getter method.
    *
-   * @return  screen orientation
+   * @return screen orientation
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-      description = "The requested screen orientation, specified as a text value.  " +
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "The requested screen orientation, specified as a text value.  "
+      +
       "Commonly used values are " +
       "landscape, portrait, sensor, user and unspecified.  " +
       "See the Android developer documentation for ActivityInfo.Screen_Orientation for the " +
@@ -1572,16 +1606,17 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Declares the requested screen orientation, specified as a text value. Commonly used values are
-   * `landscape`, `portrait`, `sensor`, `user` and `unspecified`. See the Android developer
+   * Declares the requested screen orientation, specified as a text value.
+   * Commonly used values are
+   * `landscape`, `portrait`, `sensor`, `user` and `unspecified`. See the Android
+   * developer
    * documentation for the complete list of possible
    * [options](https://developer.android.com/reference/android/R.attr.html#screenOrientation).
    *
-   * @param screenOrientation  the screen orientation as a string
+   * @param screenOrientation the screen orientation as a string
    */
   @SuppressLint("SourceLockedOrientationActivity")
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SCREEN_ORIENTATION,
-      defaultValue = "unspecified", alwaysSend = true)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SCREEN_ORIENTATION, defaultValue = "unspecified", alwaysSend = true)
   @SimpleProperty(category = PropertyCategory.APPEARANCE)
   public void ScreenOrientation(@Options(ScreenOrientation.class) String screenOrientation) {
     // Make sure screenOrientation is a valid ScreenOrientation.
@@ -1594,8 +1629,7 @@ public class Form extends AppInventorCompatActivity
     ScreenOrientationAbstract(orientation);
   }
 
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-      defaultValue = "False")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "False")
   @SimpleProperty(userVisible = false, category = PropertyCategory.APPEARANCE)
   public void ActionBar(boolean enabled) {
     if (SdkLevel.getLevel() < SdkLevel.LEVEL_HONEYCOMB) {
@@ -1616,29 +1650,30 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-  * Returns a number that encodes how contents of the screen are aligned horizontally.
-  * The choices are: 1 = left aligned, 2 = horizontally centered, 3 = right aligned
-  */
-  @SimpleProperty(
-      category = PropertyCategory.APPEARANCE,
-      description = "A number that encodes how contents of the screen are aligned "
-        + " horizontally. The choices are: 1 = left aligned, 3 = horizontally centered, "
-        + " 2 = right aligned.")
+   * Returns a number that encodes how contents of the screen are aligned
+   * horizontally.
+   * The choices are: 1 = left aligned, 2 = horizontally centered, 3 = right
+   * aligned
+   */
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "A number that encodes how contents of the screen are aligned "
+      + " horizontally. The choices are: 1 = left aligned, 3 = horizontally centered, "
+      + " 2 = right aligned.")
   public @Options(HorizontalAlignment.class) int AlignHorizontal() {
     return horizontalAlignment.toUnderlyingValue();
   }
 
   /**
-   * A number that encodes how contents of the screen are aligned horizontally. The choices are:
+   * A number that encodes how contents of the screen are aligned horizontally.
+   * The choices are:
    * `1` (left aligned), `3` (horizontally centered), `2` (right aligned).
    *
    * @internaldoc
-   * Sets the horizontal alignment for contents of the screen
+   *              Sets the horizontal alignment for contents of the screen
    *
    * @param alignment the new alignment for the form contents
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_HORIZONTAL_ALIGNMENT,
-      defaultValue = ComponentConstants.HORIZONTAL_ALIGNMENT_DEFAULT + "")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_HORIZONTAL_ALIGNMENT, defaultValue = ComponentConstants.HORIZONTAL_ALIGNMENT_DEFAULT
+      + "")
   @SimpleProperty
   public void AlignHorizontal(@Options(HorizontalAlignment.class) int alignment) {
     // Make sure the alignment is a valid HorizontalAlignment.
@@ -1653,15 +1688,17 @@ public class Form extends AppInventorCompatActivity
 
   /**
    * Returns the current alignment of the screen.
+   * 
    * @return the current alignment of the screen.
    */
-  @SuppressWarnings({"RegularMethodName", "unused"})
+  @SuppressWarnings({ "RegularMethodName", "unused" })
   public HorizontalAlignment AlignHorizontalAbstract() {
     return horizontalAlignment;
   }
 
   /**
    * Sets the horizontal alignment for the contents of the screen.
+   * 
    * @param alignment the alignment to set the contents of the screen to.
    */
   @SuppressWarnings("RegularMethodName")
@@ -1670,33 +1707,33 @@ public class Form extends AppInventorCompatActivity
     horizontalAlignment = alignment;
   }
 
- /**
-  * Returns a number that encodes how contents of the arrangement are aligned vertically.
-  * The choices are: 1 = top, 2 = vertically centered, 3 = aligned at the bottom.
-  * Vertical alignment has no effect if the screen is scrollable.
-  */
-  @SimpleProperty(
-      category = PropertyCategory.APPEARANCE,
-      description = "A number that encodes how the contents of the arrangement are aligned "
-        + "vertically. The choices are: 1 = aligned at the top, 2 = vertically centered, 3 = "
-        + "aligned at the bottom. Vertical alignment has no effect if the screen is scrollable.")
+  /**
+   * Returns a number that encodes how contents of the arrangement are aligned
+   * vertically.
+   * The choices are: 1 = top, 2 = vertically centered, 3 = aligned at the bottom.
+   * Vertical alignment has no effect if the screen is scrollable.
+   */
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "A number that encodes how the contents of the arrangement are aligned "
+      + "vertically. The choices are: 1 = aligned at the top, 2 = vertically centered, 3 = "
+      + "aligned at the bottom. Vertical alignment has no effect if the screen is scrollable.")
   public @Options(VerticalAlignment.class) int AlignVertical() {
     return AlignVerticalAbstract().toUnderlyingValue();
   }
 
   /**
-   * A number that encodes how the contents of the arrangement are aligned vertically. The choices
-   * are: `1` (aligned at the top), `2` (vertically centered), `3` (aligned at the bottom). Vertical
+   * A number that encodes how the contents of the arrangement are aligned
+   * vertically. The choices
+   * are: `1` (aligned at the top), `2` (vertically centered), `3` (aligned at the
+   * bottom). Vertical
    * alignment has no effect if the screen is scrollable.
    *
    * @internaldoc
-   * Sets the vertical alignment for contents of the screen
+   *              Sets the vertical alignment for contents of the screen
    *
    * @param alignment the new vertical alignment of the form contents
    */
-  @DesignerProperty(
-      editorType = PropertyTypeConstants.PROPERTY_TYPE_VERTICAL_ALIGNMENT,
-      defaultValue = ComponentConstants.VERTICAL_ALIGNMENT_DEFAULT + "")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_VERTICAL_ALIGNMENT, defaultValue = ComponentConstants.VERTICAL_ALIGNMENT_DEFAULT
+      + "")
   @SimpleProperty
   public void AlignVertical(@Options(VerticalAlignment.class) int alignment) {
     // Make sure the alignment is a valid VerticalAlignment.
@@ -1711,6 +1748,7 @@ public class Form extends AppInventorCompatActivity
 
   /**
    * Returns the vertical alignment of the screen's contents.
+   * 
    * @return the vertical alignment of the screen's contents.
    */
   @SuppressWarnings("RegularMethodName")
@@ -1720,6 +1758,7 @@ public class Form extends AppInventorCompatActivity
 
   /**
    * Sets the vertical alignment of the screen's contents.
+   * 
    * @param alignment the alignment to set the screen's contents to.
    */
   @SuppressWarnings("RegularMethodName")
@@ -1728,15 +1767,16 @@ public class Form extends AppInventorCompatActivity
     verticalAlignment = alignment;
   }
 
- /**
-  * Returns the type of open screen animation (default, fade, zoom, slidehorizontal,
-  * slidevertical and none).
-  *
-  * @return open screen animation
-  */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-    description = "The animation for switching to another screen. Valid" +
-    " options are default, fade, zoom, slidehorizontal, slidevertical, and none"    )
+  /**
+   * Returns the type of open screen animation (default, fade, zoom,
+   * slidehorizontal,
+   * slidevertical and none).
+   *
+   * @return open screen animation
+   */
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "The animation for switching to another screen. Valid"
+      +
+      " options are default, fade, zoom, slidehorizontal, slidevertical, and none")
   public @Options(ScreenAnimation.class) String OpenScreenAnimation() {
     if (openAnimType != null) {
       return openAnimType.toUnderlyingValue();
@@ -1749,8 +1789,7 @@ public class Form extends AppInventorCompatActivity
    *
    * @param animType the type of animation to use for the transition
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SCREEN_ANIMATION,
-      defaultValue = "default")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SCREEN_ANIMATION, defaultValue = "default")
   @SimpleProperty
   public void OpenScreenAnimation(@Options(ScreenAnimation.class) String animType) {
     // Make sure that "animType" is a valid ScreenAnimation.
@@ -1768,7 +1807,7 @@ public class Form extends AppInventorCompatActivity
    *
    * @return The current open screen animation.
    */
-  @SuppressWarnings({"RegularMethodName", "unused"})
+  @SuppressWarnings({ "RegularMethodName", "unused" })
   public ScreenAnimation OpenScreenAnimationAbstract() {
     return openAnimType;
   }
@@ -1783,16 +1822,17 @@ public class Form extends AppInventorCompatActivity
     openAnimType = animType;
   }
 
- /**
-  * The animation for closing current screen and returning to the previous screen. Valid options
-  * are `default`, `fade`, `zoom`, `slidehorizontal`, `slidevertical`, and `none`.
-  *
-  * @return open screen animation
-  */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-      description = "The animation for closing current screen and returning "
-        + " to the previous screen. Valid options are default, fade, zoom, slidehorizontal, "
-        + "slidevertical, and none")
+  /**
+   * The animation for closing current screen and returning to the previous
+   * screen. Valid options
+   * are `default`, `fade`, `zoom`, `slidehorizontal`, `slidevertical`, and
+   * `none`.
+   *
+   * @return open screen animation
+   */
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "The animation for closing current screen and returning "
+      + " to the previous screen. Valid options are default, fade, zoom, slidehorizontal, "
+      + "slidevertical, and none")
   public @Options(ScreenAnimation.class) String CloseScreenAnimation() {
     if (closeAnimType != null) {
       return CloseScreenAnimationAbstract().toUnderlyingValue();
@@ -1806,8 +1846,7 @@ public class Form extends AppInventorCompatActivity
    *
    * @param animType the type of animation to use for the transition
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SCREEN_ANIMATION,
-      defaultValue = "default")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SCREEN_ANIMATION, defaultValue = "default")
   @SimpleProperty
   public void CloseScreenAnimation(@Options(ScreenAnimation.class) String animType) {
     // Make sure that "animType" is a valid ScreenAnimation.
@@ -1831,7 +1870,8 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Sets the animation type for the transition of this form closing and returning to a form behind
+   * Sets the animation type for the transition of this form closing and returning
+   * to a form behind
    * it on the activity stack.
    * 
    * @param animType the type of animation to use for the transition.
@@ -1842,75 +1882,76 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * The image used for your App's display icon should be a square png or jpeg image with dimensions
-   * up to 1024x1024 pixels. Larger images may cause compiling or installing the app to fail.
-   * The build server will generate images of standard dimensions for Android devices.
+   * The image used for your App's display icon should be a square png or jpeg
+   * image with dimensions
+   * up to 1024x1024 pixels. Larger images may cause compiling or installing the
+   * app to fail.
+   * The build server will generate images of standard dimensions for Android
+   * devices.
    *
    * @param name the name of the application icon
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_ASSET,
-      defaultValue = "")
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_ASSET, defaultValue = "")
   @SimpleProperty(userVisible = false, category = PropertyCategory.GENERAL)
   public void Icon(String name) {
     // We don't actually need to do anything.
   }
 
   /**
-   * An integer value which must be incremented each time a new Android Application Package File
+   * An integer value which must be incremented each time a new Android
+   * Application Package File
    * (APK) is created for the Google Play Store.
    *
    * @param vCode the version name of the application
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_NON_NEGATIVE_INTEGER,
-    defaultValue = "1")
-  @SimpleProperty(userVisible = false,
-    description = "An integer value which must be incremented each time a new Android "
-    +  "Application Package File (APK) is created for the Google Play Store.",
-    category = PropertyCategory.PUBLISHING)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_NON_NEGATIVE_INTEGER, defaultValue = "1")
+  @SimpleProperty(userVisible = false, description = "An integer value which must be incremented each time a new Android "
+      + "Application Package File (APK) is created for the Google Play Store.", category = PropertyCategory.PUBLISHING)
   public void VersionCode(int vCode) {
     // We don't actually need to do anything.
   }
 
   /**
-   * A string which can be changed to allow Google Play Store users to distinguish between
+   * A string which can be changed to allow Google Play Store users to distinguish
+   * between
    * different versions of the App.
    *
    * @param vName the version name of the application
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING,
-    defaultValue = "1.0")
-  @SimpleProperty(userVisible = false,
-    description = "A string which can be changed to allow Google Play "
-    + "Store users to distinguish between different versions of the App.",
-    category = PropertyCategory.PUBLISHING)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING, defaultValue = "1.0")
+  @SimpleProperty(userVisible = false, description = "A string which can be changed to allow Google Play "
+      + "Store users to distinguish between different versions of the App.", category = PropertyCategory.PUBLISHING)
   public void VersionName(String vName) {
     // We don't actually need to do anything.
   }
 
   /**
-   * If set to responsive (the default), screen layouts will use the actual resolution of the
-   * device. See the [documentation on responsive design](../other/responsiveDesign.html) in App
+   * If set to responsive (the default), screen layouts will use the actual
+   * resolution of the
+   * device. See the [documentation on responsive
+   * design](../other/responsiveDesign.html) in App
    * Inventor for more information.
-   * If set to fixed, screen layouts will be created for a single fixed-size screen and autoscaled.
+   * If set to fixed, screen layouts will be created for a single fixed-size
+   * screen and autoscaled.
    *
-   *   **Note:** This property appears on Screen1 only and controls the sizing for all screens in
+   * **Note:** This property appears on Screen1 only and controls the sizing for
+   * all screens in
    * the app.
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SIZING,
-      defaultValue = "Responsive", alwaysSend = true)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SIZING, defaultValue = "Responsive", alwaysSend = true)
   @SimpleProperty(userVisible = false,
-      // This desc won't apprear as a tooltip, since there's no block, but we'll keep it with the source.
+      // This desc won't apprear as a tooltip, since there's no block, but we'll keep
+      // it with the source.
       description = "If set to fixed,  screen layouts will be created for a single fixed-size screen and autoscaled. " +
           "If set to responsive, screen layouts will use the actual resolution of the device.  " +
           "See the documentation on responsive design in App Inventor for more information. " +
-          "This property appears on Screen1 only and controls the sizing for all screens in the app.",
-      category = PropertyCategory.GENERAL)
+          "This property appears on Screen1 only and controls the sizing for all screens in the app.", category = PropertyCategory.GENERAL)
   public void Sizing(String value) {
     // This is used by the project and build server.
     // We also use it to adjust sizes
     Log.d(LOG_TAG, "Sizing(" + value + ")");
-    formWidth = (int)((float) this.getResources().getDisplayMetrics().widthPixels / deviceDensity);
-    formHeight = (int)((float) this.getResources().getDisplayMetrics().heightPixels / deviceDensity);
+    formWidth = (int) ((float) this.getResources().getDisplayMetrics().widthPixels / deviceDensity);
+    formHeight = (int) ((float) this.getResources().getDisplayMetrics().heightPixels / deviceDensity);
     if (value.equals("Fixed")) {
       sCompatibilityMode = true;
       formWidth /= compatScalingFactor;
@@ -1926,44 +1967,47 @@ public class Form extends AppInventorCompatActivity
   }
 
   // public String Sizing() {
-  //   if (compatibilityMode) {
-  //     return "Fixed";
-  //   } else {
-  //     return "Responsive";
-  //   }
+  // if (compatibilityMode) {
+  // return "Fixed";
+  // } else {
+  // return "Responsive";
+  // }
   // }
 
   /**
    * ShowListsAsJson Property Setter
    * This only appears in the designer for screen 1
+   * 
    * @param
    */
 
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
-    defaultValue = "True", alwaysSend = true)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "True", alwaysSend = true)
   @SimpleProperty(category = PropertyCategory.GENERAL, userVisible = false,
-  // This description won't appear as a tooltip, since there's no block, but we'll keep it with the source.
-    description = "If false, lists will be converted to strings using Lisp "
-      + "notation, i.e., as symbols separated by spaces, e.g., (a 1 b2 (c "
-      + "d). If true, lists will appear as in Json or Python, e.g.  [\"a\", 1, "
-      + "\"b\", 2, [\"c\", \"d\"]].  This property appears only in Screen 1, "
-      + "and the value for Screen 1 determines the behavior for all "
-      + "screens. The property defaults to \"true\" meaning that the App "
-      + "Inventor programmer must explicitly set it to \"false\" if Lisp "
-      + "syntax is desired. In older versions of App Inventor, this setting "
-      + "defaulted to false. Older projects should not have been affected by "
-      + "this default settings update."
-    )
+      // This description won't appear as a tooltip, since there's no block, but we'll
+      // keep it with the source.
+      description = "If false, lists will be converted to strings using Lisp "
+          + "notation, i.e., as symbols separated by spaces, e.g., (a 1 b2 (c "
+          + "d). If true, lists will appear as in Json or Python, e.g.  [\"a\", 1, "
+          + "\"b\", 2, [\"c\", \"d\"]].  This property appears only in Screen 1, "
+          + "and the value for Screen 1 determines the behavior for all "
+          + "screens. The property defaults to \"true\" meaning that the App "
+          + "Inventor programmer must explicitly set it to \"false\" if Lisp "
+          + "syntax is desired. In older versions of App Inventor, this setting "
+          + "defaulted to false. Older projects should not have been affected by "
+          + "this default settings update.")
   public void ShowListsAsJson(boolean asJson) {
     showListsAsJson = asJson;
   }
 
   /**
-   * If `true`{:.logic.block} (the default), lists will be shown as strings in JSON/Python notation
-   * for example [1, "a", true]. If `false`{:.logic.block}, lists will be shown in the LISP
+   * If `true`{:.logic.block} (the default), lists will be shown as strings in
+   * JSON/Python notation
+   * for example [1, "a", true]. If `false`{:.logic.block}, lists will be shown in
+   * the LISP
    * notation, for example (1 a true).
    *
-   *   **Note:** This property appears only in Screen1 and the value for Screen1 determines the
+   * **Note:** This property appears only in Screen1 and the value for Screen1
+   * determines the
    * behavior for all screens in the app.
    */
   @SimpleProperty(category = PropertyCategory.GENERAL, userVisible = false)
@@ -1972,23 +2016,37 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * This is the display name of the installed application in the phone. If the `AppName` is blank,
+   * This is the display name of the installed application in the phone. If the
+   * `AppName` is blank,
    * it will be set to the name of the project when the project is built.
    *
    * @param aName the display name of the installed application in the phone
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING,
-      defaultValue = "")
-  @SimpleProperty(userVisible = false,
-      description = "This is the display name of the installed application in the phone." +
-          "If the AppName is blank, it will be set to the name of the project when the project is built.",
-      category = PropertyCategory.GENERAL)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING, defaultValue = "")
+  @SimpleProperty(userVisible = false, description = "This is the display name of the installed application in the phone."
+      +
+      "If the AppName is blank, it will be set to the name of the project when the project is built.", category = PropertyCategory.GENERAL)
   public void AppName(String aName) {
     // We don't actually need to do anything.
   }
 
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR,
-      defaultValue = ComponentConstants.DEFAULT_PRIMARY_COLOR)
+  /**
+   * This is the package name of the installed application in the phone. If the
+   * `PackageName` is blank,
+   * it will be set to the default package name (com.example.app) when the project
+   * is built.
+   *
+   * @param pName the package name of the installed application in the phone
+   */
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING, defaultValue = "com.example.app")
+  @SimpleProperty(userVisible = false, description = "This is the package name of the installed application in the phone."
+      +
+      "If the PackageName is blank, it will be set to a default package name when the project is built.", category = PropertyCategory.GENERAL)
+  public void PackageName(String pName) {
+    // We don't actually need to do anything.
+  }
+
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR, defaultValue = ComponentConstants.DEFAULT_PRIMARY_COLOR)
   @SimpleProperty(userVisible = false, description = "This is the primary color used for " +
       "Material UI elements, such as the ActionBar.", category = PropertyCategory.THEMING)
   public void PrimaryColor(final int color) {
@@ -1996,7 +2054,8 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * This is the primary color used as part of the Android theme, including coloring the `%type%`'s
+   * This is the primary color used as part of the Android theme, including
+   * coloring the `%type%`'s
    * title bar.
    */
   @SimpleProperty
@@ -2005,8 +2064,7 @@ public class Form extends AppInventorCompatActivity
     return primaryColor;
   }
 
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR,
-      defaultValue = ComponentConstants.DEFAULT_PRIMARY_DARK_COLOR)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR, defaultValue = ComponentConstants.DEFAULT_PRIMARY_DARK_COLOR)
   @SimpleProperty(userVisible = false, description = "This is the primary color used for darker " +
       "elements in Material UI.", category = PropertyCategory.THEMING)
   public void PrimaryColorDark(int color) {
@@ -2014,7 +2072,8 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * This is the primary color used when the Theme property is specified to be Dark. It applies to
+   * This is the primary color used when the Theme property is specified to be
+   * Dark. It applies to
    * a number of elements, including the `%type%`'s title bar.
    */
   @SimpleProperty()
@@ -2023,8 +2082,7 @@ public class Form extends AppInventorCompatActivity
     return primaryColorDark;
   }
 
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR,
-      defaultValue = ComponentConstants.DEFAULT_ACCENT_COLOR)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR, defaultValue = ComponentConstants.DEFAULT_ACCENT_COLOR)
   @SimpleProperty(userVisible = false, description = "This is the accent color used for " +
       "highlights and other user interface accents.", category = PropertyCategory.THEMING)
   public void AccentColor(int color) {
@@ -2032,8 +2090,10 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * This is the accent color used for highlights and other user interface accents in newer
-   * versions of Android. Components affected by this property include dialogs created by the
+   * This is the accent color used for highlights and other user interface accents
+   * in newer
+   * versions of Android. Components affected by this property include dialogs
+   * created by the
    * {@link Notifier}, the {@link DatePicker}, and others.
    */
   @SimpleProperty
@@ -2043,26 +2103,29 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Selects the theme for the application. Theme can only be set at compile time and the Companion
+   * Selects the theme for the application. Theme can only be set at compile time
+   * and the Companion
    * will approximate changes during live development. Possible options are:
    *
-   *   * `Classic`, which is the same as older versions of App Inventor;
-   *   * `Device Default`, which gives the same theme as the version of Android running on the
-   *     device and uses PrimaryColor for the Action Bar and has light buttons;
-   *   * `Black Title Text`, which is the `Device Default` theme but with black title text; and
-   *   * `Dark`, which is a dark version of the `Device Default` theme using `PrimaryColorDark` and
-   *     having dark grey components.
+   * * `Classic`, which is the same as older versions of App Inventor;
+   * * `Device Default`, which gives the same theme as the version of Android
+   * running on the
+   * device and uses PrimaryColor for the Action Bar and has light buttons;
+   * * `Black Title Text`, which is the `Device Default` theme but with black
+   * title text; and
+   * * `Dark`, which is a dark version of the `Device Default` theme using
+   * `PrimaryColorDark` and
+   * having dark grey components.
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_THEME,
-      defaultValue = ComponentConstants.DEFAULT_THEME)
-  @SimpleProperty(userVisible = false, description = "Pick a design theme for your app. Themes change the appearance of an app, " +
-     "such as how buttons and text look. The most common themes are: </p> <ul> <li> <code>Classic</code>: " +
-     "This theme stays consistent whether you are looking at an Android, iOS, or the screen layout " +
-     "in App Inventor’s designer. Choose Classic if you want detailed control of the appearance " +
-     "of your app. </li><li> <code>Device Default</code>: This theme makes your app resemble the other " +
-     "apps on your device. With the default theme, however, your app won’t look consistent across " +
-     "Android, iOS, and App Inventor’s designer. The best way to see the true appearance of your app is to view it using the Companion.</ul>",
-      category = PropertyCategory.THEMING)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_THEME, defaultValue = ComponentConstants.DEFAULT_THEME)
+  @SimpleProperty(userVisible = false, description = "Pick a design theme for your app. Themes change the appearance of an app, "
+      +
+      "such as how buttons and text look. The most common themes are: </p> <ul> <li> <code>Classic</code>: " +
+      "This theme stays consistent whether you are looking at an Android, iOS, or the screen layout " +
+      "in App Inventor’s designer. Choose Classic if you want detailed control of the appearance " +
+      "of your app. </li><li> <code>Device Default</code>: This theme makes your app resemble the other " +
+      "apps on your device. With the default theme, however, your app won’t look consistent across " +
+      "Android, iOS, and App Inventor’s designer. The best way to see the true appearance of your app is to view it using the Companion.</ul>", category = PropertyCategory.THEMING)
   public void Theme(String theme) {
     if (usesDefaultBackground) {
       if (theme.equalsIgnoreCase("AppTheme") && !isClassicMode()) {
@@ -2088,10 +2151,9 @@ public class Form extends AppInventorCompatActivity
   /**
    * Returns the Screen width in pixels (x-size).
    *
-   * @return  width property used by the layout
+   * @return width property used by the layout
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-    description = "Screen width (x-size).")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "Screen width (x-size).")
   public int Width() {
     Log.d(LOG_TAG, "Form.Width = " + formWidth);
     return formWidth;
@@ -2100,47 +2162,46 @@ public class Form extends AppInventorCompatActivity
   /**
    * Returns the Screen height in pixels (y-size).
    *
-   * @return  height property used by the layout
+   * @return height property used by the layout
    */
-  @SimpleProperty(category = PropertyCategory.APPEARANCE,
-    description = "Screen height (y-size).")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "Screen height (y-size).")
   public int Height() {
     Log.d(LOG_TAG, "Form.Height = " + formHeight);
     return formHeight;
   }
 
   /**
-   * A URL which will be opened on the left side panel (which can be toggled once it is open). This
-   * is intended for projects that have an in-line tutorial as part of the project. For security
-   * reasons, only tutorials hosted on http://appinventor.mit.edu or linked to from our URL
-   * shortener (http://appinv.us) may be used here. Other URLs will be silently ignored.
+   * A URL which will be opened on the left side panel (which can be toggled once
+   * it is open). This
+   * is intended for projects that have an in-line tutorial as part of the
+   * project. For security
+   * reasons, only tutorials hosted on http://appinventor.mit.edu or linked to
+   * from our URL
+   * shortener (http://appinv.us) may be used here. Other URLs will be silently
+   * ignored.
    */
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING,
-    defaultValue = "")
-  @SimpleProperty(userVisible = false,
-    description = "A URL to use to populate the Tutorial Sidebar while "
-    + "editing a project. Used as a teaching aid.",
-    category = PropertyCategory.GENERAL)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_STRING, defaultValue = "")
+  @SimpleProperty(userVisible = false, description = "A URL to use to populate the Tutorial Sidebar while "
+      + "editing a project. Used as a teaching aid.", category = PropertyCategory.GENERAL)
   public void TutorialURL(String url) {
     // We don't actually do anything This property is stored in the
     // project properties file
   }
 
-  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SUBSET_JSON,
-    defaultValue = "")
-  @SimpleProperty(userVisible = false,
-    description = "Choose the set of components you’ll need for your project. A smaller set is " +
-                   "good for beginner projects, while experts can use all options to build complex apps. For example, the " +
-                   "Beginner Toolkit gives you access to all the features you need for our novice tutorials and curriculum.</p>" +
-                   "<p>You can always change your toolkit in Project Properties, so your choice now won’t limit the future possibilities for your app.</p>",
-    category = PropertyCategory.GENERAL)
+  @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_SUBSET_JSON, defaultValue = "")
+  @SimpleProperty(userVisible = false, description = "Choose the set of components you’ll need for your project. A smaller set is "
+      +
+      "good for beginner projects, while experts can use all options to build complex apps. For example, the " +
+      "Beginner Toolkit gives you access to all the features you need for our novice tutorials and curriculum.</p>" +
+      "<p>You can always change your toolkit in Project Properties, so your choice now won’t limit the future possibilities for your app.</p>", category = PropertyCategory.GENERAL)
   public void BlocksToolkit(String json) {
     // We don't actually do anything. This property is stored in the
     // project properties file
   }
 
   /**
-   * Gets the name of the underlying platform running the app. Currently, this is the text
+   * Gets the name of the underlying platform running the app. Currently, this is
+   * the text
    * "Android". Other platforms may be supported in the future.
    *
    * @return The platform running the app
@@ -2152,9 +2213,12 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Gets the version number of the platform running the app. This is typically a dotted version
-   * number, such as 10.0. Any value can be returned, however, so you should take care to handle
-   * unexpected data. If the platform version is unavailable, the empty text will be returned.
+   * Gets the version number of the platform running the app. This is typically a
+   * dotted version
+   * number, such as 10.0. Any value can be returned, however, so you should take
+   * care to handle
+   * unexpected data. If the platform version is unavailable, the empty text will
+   * be returned.
    *
    * @return The version of the platform running the app
    */
@@ -2169,7 +2233,8 @@ public class Form extends AppInventorCompatActivity
    *
    * @param nextFormName the name of the new form to display
    */
-  // This is called from runtime.scm when a "open another screen" block is executed.
+  // This is called from runtime.scm when a "open another screen" block is
+  // executed.
   public static void switchForm(String nextFormName) {
     if (activeForm != null) {
       activeForm.startNewForm(nextFormName, null);
@@ -2182,16 +2247,17 @@ public class Form extends AppInventorCompatActivity
    * Display a new form and pass a startup value to the new form.
    *
    * @param nextFormName the name of the new form to display
-   * @param startValue the start value to pass to the new form
+   * @param startValue   the start value to pass to the new form
    */
-  // This is called from runtime.scm when a "open another screen with start value" block is
-  // executed.  Note that startNewForm will JSON encode the start value
+  // This is called from runtime.scm when a "open another screen with start value"
+  // block is
+  // executed. Note that startNewForm will JSON encode the start value
   public static void switchFormWithStartValue(String nextFormName, Object startValue) {
     Log.i(LOG_TAG, "Open another screen with start value:" + nextFormName);
     if (activeForm != null) {
       activeForm.startNewForm(nextFormName, startValue);
-      } else {
-        throw new IllegalStateException("activeForm is null");
+    } else {
+      throw new IllegalStateException("activeForm is null");
     }
   }
 
@@ -2199,21 +2265,22 @@ public class Form extends AppInventorCompatActivity
   protected void startNewForm(String nextFormName, Object startupValue) {
     Log.i(LOG_TAG, "startNewForm:" + nextFormName);
     Intent activityIntent = new Intent();
-    // Note that the following is dependent on form generated class names being the same as
+    // Note that the following is dependent on form generated class names being the
+    // same as
     // their form names and all forms being in the same package.
     activityIntent.setClassName(this, getPackageName() + "." + nextFormName);
-    String functionName = (startupValue == null) ? "open another screen" :
-      "open another screen with start value";
+    String functionName = (startupValue == null) ? "open another screen" : "open another screen with start value";
     String jValue;
     if (startupValue != null) {
       Log.i(LOG_TAG, "StartNewForm about to JSON encode:" + startupValue);
       jValue = jsonEncodeForForm(startupValue, functionName);
       Log.i(LOG_TAG, "StartNewForm got JSON encoding:" + jValue);
-    } else{
+    } else {
       jValue = "";
     }
     activityIntent.putExtra(ARGUMENT_NAME, jValue);
-    // Save the nextFormName so that it can be passed to the OtherScreenClosed event in the
+    // Save the nextFormName so that it can be passed to the OtherScreenClosed event
+    // in the
     // future.
     this.nextFormName = nextFormName;
     Log.i(LOG_TAG, "about to start new form" + nextFormName);
@@ -2253,7 +2320,6 @@ public class Form extends AppInventorCompatActivity
     EventDispatcher.dispatchEvent(this, "OtherScreenClosed", otherScreenName, result);
   }
 
-
   // Component implementation
 
   @Override
@@ -2281,13 +2347,11 @@ public class Form extends AppInventorCompatActivity
   }
 
   @Override
-  public List<? extends Component> getChildren(){
+  public List<? extends Component> getChildren() {
     return allChildren;
   }
 
-
-
-  public float deviceDensity(){
+  public float deviceDensity() {
     return this.deviceDensity;
   }
 
@@ -2298,20 +2362,22 @@ public class Form extends AppInventorCompatActivity
   @Override
   public void setChildWidth(final AndroidViewComponent component, int width) {
     int cWidth = Width();
-    if (cWidth == 0) {          // We're not really ready yet...
+    if (cWidth == 0) { // We're not really ready yet...
       final int fWidth = width;
       androidUIHandler.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            System.err.println("(Form)Width not stable yet... trying again");
-            setChildWidth(component, fWidth);
-          }
-        }, 100);                // Try again in 1/10 of a second
+        @Override
+        public void run() {
+          System.err.println("(Form)Width not stable yet... trying again");
+          setChildWidth(component, fWidth);
+        }
+      }, 100); // Try again in 1/10 of a second
     }
-    System.err.println("Form.setChildWidth(): width = " + width + " parent Width = " + cWidth + " child = " + component);
+    System.err
+        .println("Form.setChildWidth(): width = " + width + " parent Width = " + cWidth + " child = " + component);
     if (width <= LENGTH_PERCENT_TAG) {
-      width = cWidth * (- (width - LENGTH_PERCENT_TAG)) / 100;
-//      System.err.println("Form.setChildWidth(): Setting " + component + " lastwidth to " + width);
+      width = cWidth * (-(width - LENGTH_PERCENT_TAG)) / 100;
+      // System.err.println("Form.setChildWidth(): Setting " + component + " lastwidth
+      // to " + width);
     }
 
     component.setLastWidth(width);
@@ -2323,18 +2389,18 @@ public class Form extends AppInventorCompatActivity
   @Override
   public void setChildHeight(final AndroidViewComponent component, int height) {
     int cHeight = Height();
-    if (cHeight == 0) {         // Not ready yet...
+    if (cHeight == 0) { // Not ready yet...
       final int fHeight = height;
       androidUIHandler.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            System.err.println("(Form)Height not stable yet... trying again");
-            setChildHeight(component, fHeight);
-          }
-        }, 100);                // Try again in 1/10 of a second
+        @Override
+        public void run() {
+          System.err.println("(Form)Height not stable yet... trying again");
+          setChildHeight(component, fHeight);
+        }
+      }, 100); // Try again in 1/10 of a second
     }
     if (height <= LENGTH_PERCENT_TAG) {
-      height = Height() * (- (height - LENGTH_PERCENT_TAG)) / 100;
+      height = Height() * (-(height - LENGTH_PERCENT_TAG)) / 100;
     }
 
     component.setLastHeight(height);
@@ -2353,13 +2419,13 @@ public class Form extends AppInventorCompatActivity
     return activeForm;
   }
 
-
   /**
    * Returns the string that was passed to this screen when it was opened
    *
    * @return StartupText
    */
-  // This is called from runtime.scm when a "get plain start text" block is executed.
+  // This is called from runtime.scm when a "get plain start text" block is
+  // executed.
   public static String getStartText() {
     if (activeForm != null) {
       return activeForm.startupValue;
@@ -2368,14 +2434,14 @@ public class Form extends AppInventorCompatActivity
     }
   }
 
-
   /**
    * Returns the value that was passed to this screen when it was opened
    *
    * @return StartValue
    */
   // TODO(hal): cache this?
-  // Note: This is called as a primitive from runtime.scm and it returns an arbitrary Java object.
+  // Note: This is called as a primitive from runtime.scm and it returns an
+  // arbitrary Java object.
   // Therefore it must be explicitly sanitized by runtime, unlike methods, which
   // are sanitized via call-component-method.
   public static Object getStartValue() {
@@ -2385,7 +2451,6 @@ public class Form extends AppInventorCompatActivity
       throw new IllegalStateException("activeForm is null");
     }
   }
-
 
   /**
    * Closes the current screen, as opposed to finishApplication, which
@@ -2400,12 +2465,13 @@ public class Form extends AppInventorCompatActivity
     }
   }
 
-  // This is called from runtime.scm when a "close screen with value" block is executed.
+  // This is called from runtime.scm when a "close screen with value" block is
+  // executed.
   public static void finishActivityWithResult(Object result) {
     if (activeForm != null) {
       if (activeForm instanceof ReplForm) {
-        ((ReplForm)activeForm).setResult(result);
-        activeForm.closeForm(null);        // This will call RetValManager.popScreen()
+        ((ReplForm) activeForm).setResult(result);
+        activeForm.closeForm(null); // This will call RetValManager.popScreen()
       } else {
         String jString = jsonEncodeForForm(result, "close screen with value");
         Intent resultIntent = new Intent();
@@ -2417,7 +2483,8 @@ public class Form extends AppInventorCompatActivity
     }
   }
 
-  // This is called from runtime.scm when a "close screen with plain text" block is executed.
+  // This is called from runtime.scm when a "close screen with plain text" block
+  // is executed.
   public static void finishActivityWithTextResult(String result) {
     if (activeForm != null) {
       Intent resultIntent = new Intent();
@@ -2427,7 +2494,6 @@ public class Form extends AppInventorCompatActivity
       throw new IllegalStateException("activeForm is null");
     }
   }
-
 
   protected void closeForm(Intent resultIntent) {
     if (resultIntent != null) {
@@ -2455,31 +2521,40 @@ public class Form extends AppInventorCompatActivity
   }
 
   private void closeApplication() {
-    // In a multi-screen application, only Screen1 can successfully call System.exit(0). Here, we
-    // set applicationIsBeingClosed to true. If this is not Screen1, when we call finish() below,
+    // In a multi-screen application, only Screen1 can successfully call
+    // System.exit(0). Here, we
+    // set applicationIsBeingClosed to true. If this is not Screen1, when we call
+    // finish() below,
     // the previous form's onResume method will be called. In onResume, we check
-    // applicationIsBeingClosed and call closeApplication again. The stack of forms will unwind
+    // applicationIsBeingClosed and call closeApplication again. The stack of forms
+    // will unwind
     // until we get back to Screen1; then we'll call System.exit(0) below.
     applicationIsBeingClosed = true;
 
     finish();
 
     if (formName.equals("Screen1")) {
-      // I know that this is frowned upon in Android circles but I really think that it's
-      // confusing to users if the exit button doesn't really stop everything, including other
-      // forms in the app (when we support them), non-UI threads, etc.  We might need to be
-      // careful about this is we ever support services that start up on boot (since it might
-      // mean that the only way to restart that service) is to reboot but that's a long way off.
+      // I know that this is frowned upon in Android circles but I really think that
+      // it's
+      // confusing to users if the exit button doesn't really stop everything,
+      // including other
+      // forms in the app (when we support them), non-UI threads, etc. We might need
+      // to be
+      // careful about this is we ever support services that start up on boot (since
+      // it might
+      // mean that the only way to restart that service) is to reboot but that's a
+      // long way off.
       System.exit(0);
     }
   }
 
-  // Configure the system menu to include items to kill the application and to show "about"
+  // Configure the system menu to include items to kill the application and to
+  // show "about"
   // information
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    // This procedure is called only once.  To change the items dynamically
+    // This procedure is called only once. To change the items dynamically
     // we would use onPrepareOptionsMenu.
     super.onCreateOptionsMenu(menu);
     // add the menu items
@@ -2494,25 +2569,25 @@ public class Form extends AppInventorCompatActivity
 
   public void addExitButtonToMenu(Menu menu) {
     MenuItem stopApplicationItem = menu.add(Menu.NONE, Menu.NONE, Menu.FIRST,
-    "Stop this application")
-    .setOnMenuItemClickListener(new OnMenuItemClickListener() {
-      public boolean onMenuItemClick(MenuItem item) {
-        showExitApplicationNotification();
-        return true;
-      }
-    });
+        "Stop this application")
+        .setOnMenuItemClickListener(new OnMenuItemClickListener() {
+          public boolean onMenuItemClick(MenuItem item) {
+            showExitApplicationNotification();
+            return true;
+          }
+        });
     stopApplicationItem.setIcon(android.R.drawable.ic_notification_clear_all);
   }
 
   public void addAboutInfoToMenu(Menu menu) {
     MenuItem aboutAppItem = menu.add(Menu.NONE, Menu.NONE, 2,
-    "About this application")
-    .setOnMenuItemClickListener(new OnMenuItemClickListener() {
-      public boolean onMenuItemClick(MenuItem item) {
-        showAboutApplicationNotification();
-        return true;
-      }
-    });
+        "About this application")
+        .setOnMenuItemClickListener(new OnMenuItemClickListener() {
+          public boolean onMenuItemClick(MenuItem item) {
+            showAboutApplicationNotification();
+            return true;
+          }
+        });
     aboutAppItem.setIcon(android.R.drawable.sym_def_app_icon);
   }
 
@@ -2532,10 +2607,19 @@ public class Form extends AppInventorCompatActivity
         "the application to use it again.";
     String positiveButton = "Stop and exit";
     String negativeButton = "Don't stop";
-    // These runnables are passed to twoButtonAlert.  They perform the corresponding actions
-    // when the button is pressed.   Here there's nothing to do for "don't stop" and cancel
-    Runnable stopApplication = new Runnable() {public void run () {closeApplicationFromMenu();}};
-    Runnable doNothing = new Runnable () {public void run() {}};
+    // These runnables are passed to twoButtonAlert. They perform the corresponding
+    // actions
+    // when the button is pressed. Here there's nothing to do for "don't stop" and
+    // cancel
+    Runnable stopApplication = new Runnable() {
+      public void run() {
+        closeApplicationFromMenu();
+      }
+    };
+    Runnable doNothing = new Runnable() {
+      public void run() {
+      }
+    };
     Notifier.twoButtonDialog(
         this,
         message,
@@ -2551,10 +2635,11 @@ public class Form extends AppInventorCompatActivity
   private void showAboutApplicationNotification() {
     String title = "About this app";
     String MITtagline = "<p><small><em>Invented with MIT App Inventor<br>appinventor.mit.edu</em></small></p>";
-    // Users can hide the taglines by including an HTML open comment <!-- in the about screen message
+    // Users can hide the taglines by including an HTML open comment <!-- in the
+    // about screen message
     String message = aboutScreen + MITtagline;
     message = message.replaceAll("\\n", "<br>"); // Allow for line breaks in the string.
-    String buttonText ="Got it";
+    String buttonText = "Got it";
     Notifier.oneButtonAlert(this, message, title, buttonText);
   }
 
@@ -2630,12 +2715,11 @@ public class Form extends AppInventorCompatActivity
     // The following call results in the Form not grabbing our events and
     // handling dragging on its own, which it wants to do to handle scrolling.
     // Its effect only lasts long as the current set of motion events
-    // generated during this touch and drag sequence.  Consequently, if a
+    // generated during this touch and drag sequence. Consequently, if a
     // component wants to handle dragging it needs to call this in the
     // onTouchEvent of its View.
     frameLayout.requestDisallowInterceptTouchEvent(true);
   }
-
 
   // This is used by Repl to throttle error messages which can get out of
   // hand, e.g. if triggered by Accelerometer.
@@ -2657,13 +2741,13 @@ public class Form extends AppInventorCompatActivity
       Log.i(LOG_TAG, "Security exception " + e.getMessage());
       return;
     } catch (NoSuchMethodException e) {
-      //This is OK.
+      // This is OK.
       return;
     }
     try {
       Log.i(LOG_TAG, "calling Initialize method for Object " + component.toString());
       method.invoke(component, (Object[]) null);
-    } catch (InvocationTargetException e){
+    } catch (InvocationTargetException e) {
       Log.i(LOG_TAG, "invoke exception: " + e.getMessage());
       throw e.getTargetException();
     }
@@ -2671,35 +2755,36 @@ public class Form extends AppInventorCompatActivity
 
   /**
    * Perform some action related to fullscreen video display.
+   * 
    * @param action
-   *          Can be any of the following:
-   *          <ul>
-   *          <li>
-   *          {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_DURATION}
-   *          </li>
-   *          <li>
-   *          {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_FULLSCREEN}
-   *          </li>
-   *          <li>
-   *          {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_PAUSE}
-   *          </li>
-   *          <li>
-   *          {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_PLAY}
-   *          </li>
-   *          <li>
-   *          {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_SEEK}
-   *          </li>
-   *          <li>
-   *          {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_SOURCE}
-   *          </li>
-   *          <li>
-   *          {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_STOP}
-   *          </li>
-   *          </ul>
+   *               Can be any of the following:
+   *               <ul>
+   *               <li>
+   *               {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_DURATION}
+   *               </li>
+   *               <li>
+   *               {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_FULLSCREEN}
+   *               </li>
+   *               <li>
+   *               {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_PAUSE}
+   *               </li>
+   *               <li>
+   *               {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_PLAY}
+   *               </li>
+   *               <li>
+   *               {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_SEEK}
+   *               </li>
+   *               <li>
+   *               {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_SOURCE}
+   *               </li>
+   *               <li>
+   *               {@link com.google.appinventor.components.runtime.util.FullScreenVideoUtil#FULLSCREEN_VIDEO_ACTION_STOP}
+   *               </li>
+   *               </ul>
    * @param source
-   *          The VideoPlayer to use in some actions.
+   *               The VideoPlayer to use in some actions.
    * @param data
-   *          Used by the method. This object varies depending on the action.
+   *               Used by the method. This object varies depending on the action.
    * @return Varies depending on what action was passed in.
    */
   public synchronized Bundle fullScreenVideoAction(int action, VideoPlayer source, Object data) {
@@ -2711,10 +2796,10 @@ public class Form extends AppInventorCompatActivity
     if (backgroundImagePath != "" && setDraw != null) {
       setDraw = backgroundDrawable.getConstantState().newDrawable();
       setDraw.setColorFilter((backgroundColor != Component.COLOR_DEFAULT) ? backgroundColor : Component.COLOR_WHITE,
-        PorterDuff.Mode.DST_OVER);
+          PorterDuff.Mode.DST_OVER);
     } else {
       setDraw = new ColorDrawable(
-        (backgroundColor != Component.COLOR_DEFAULT) ? backgroundColor : Component.COLOR_WHITE);
+          (backgroundColor != Component.COLOR_DEFAULT) ? backgroundColor : Component.COLOR_WHITE);
     }
     ViewUtil.setBackgroundImage(bgview, setDraw);
     bgview.invalidate();
@@ -2768,7 +2853,8 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Test whether the permission is denied by the user and throws a PermissionException if it has.
+   * Test whether the permission is denied by the user and throws a
+   * PermissionException if it has.
    *
    * @param permission The name of the permission to assert.
    * @throws PermissionException if the permission is denied
@@ -2781,7 +2867,7 @@ public class Form extends AppInventorCompatActivity
 
   /**
    * askPermission -- Request the user to allow what Google claims is
-   *                  a "dangerous" permission.
+   * a "dangerous" permission.
    *
    * Newer versions of Android require explicit user consent for
    * selected permissions, even if they are declared in the Android
@@ -2796,8 +2882,8 @@ public class Form extends AppInventorCompatActivity
    *
    * @param permission        -- The requested Android Permission as a strong
    * @param responseRequestor -- The PermissionResultHandler that
-   *                             takes actions based on the user
-   *                             provided answer.
+   *                          takes actions based on the user
+   *                          provided answer.
    */
   public void askPermission(final String permission, final PermissionResultHandler responseRequestor) {
     final Form form = this;
@@ -2807,20 +2893,21 @@ public class Form extends AppInventorCompatActivity
       return;
     }
     androidUIHandler.post(new Runnable() {
-        @Override
-        public void run() {
-          int nonce = permissionRandom.nextInt(MAX_PERMISSION_NONCE);
-          Log.d(LOG_TAG, "askPermission: permission = " + permission +
+      @Override
+      public void run() {
+        int nonce = permissionRandom.nextInt(MAX_PERMISSION_NONCE);
+        Log.d(LOG_TAG, "askPermission: permission = " + permission +
             " requestCode = " + nonce);
-          permissionHandlers.put(nonce, responseRequestor);
-          ActivityCompat.requestPermissions((Activity)form,
-            new String[] {permission}, nonce);
-        }
-      });
+        permissionHandlers.put(nonce, responseRequestor);
+        ActivityCompat.requestPermissions((Activity) form,
+            new String[] { permission }, nonce);
+      }
+    });
   }
 
   /**
-   * Evaluates the request for bulk permissions and asks the user for any ungranted permissions.
+   * Evaluates the request for bulk permissions and asks the user for any
+   * ungranted permissions.
    *
    * @param request the request to evaluate
    */
@@ -2835,7 +2922,7 @@ public class Form extends AppInventorCompatActivity
     if (permissionsToAsk.size() == 0) {
       // We already have all the necessary permissions
       request.onGranted();
-    }  else {
+    } else {
       // Make sure we ask for permissions on the UI thread
       androidUIHandler.post(new Runnable() {
         @Override
@@ -2868,7 +2955,7 @@ public class Form extends AppInventorCompatActivity
 
   @Override
   public void onRequestPermissionsResult(int requestCode,
-    String permissions[], int[] grantResults) {
+      String permissions[], int[] grantResults) {
     PermissionResultHandler responder = permissionHandlers.get(requestCode);
     if (responder == null) {
       // Hmm. Shouldn't happen
@@ -2876,14 +2963,14 @@ public class Form extends AppInventorCompatActivity
       return;
     }
     if (grantResults.length > 0) {
-      if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+      if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         responder.HandlePermissionResponse(permissions[0], true);
       } else {
         responder.HandlePermissionResponse(permissions[0], false);
       }
     } else {
       Log.d(LOG_TAG, "onRequestPermissionsResult: grantResults.length = " + grantResults.length +
-        " requestCode = " + requestCode);
+          " requestCode = " + requestCode);
     }
     permissionHandlers.remove(requestCode);
   }
@@ -2895,7 +2982,7 @@ public class Form extends AppInventorCompatActivity
    * @see android.Manifest.permission
    * @return True if the permission is declared in the manifest, otherwise false.
    */
-  @SuppressWarnings("WeakerAccess")  // May be used by extensions
+  @SuppressWarnings("WeakerAccess") // May be used by extensions
   public boolean doesAppDeclarePermission(String permissionName) {
     return permissions.contains(permissionName);
   }
@@ -2934,19 +3021,21 @@ public class Form extends AppInventorCompatActivity
    *
    * @param asset The filename of an application asset
    * @return An open InputStream to the asset
-   * @throws IOException if the asset cannot be opened, e.g., if it is not bundled in the app
+   * @throws IOException if the asset cannot be opened, e.g., if it is not bundled
+   *                     in the app
    */
-  @SuppressWarnings({"WeakerAccess"})  // May be called by extensions
+  @SuppressWarnings({ "WeakerAccess" }) // May be called by extensions
   public InputStream openAsset(String asset) throws IOException {
     return openAssetInternal(getAssetPath(asset));
   }
 
   /**
-   * Determines a WebView compatible, REPL-sensitive path for an asset provided by a given
+   * Determines a WebView compatible, REPL-sensitive path for an asset provided by
+   * a given
    * extension.
    *
    * @param component The extension that is requesting an asset
-   * @param asset The asset filename
+   * @param asset     The asset filename
    * @return A string containing the path to the asset
    * @throws FileNotFoundException if the asset cannot be located
    */
@@ -2956,21 +3045,23 @@ public class Form extends AppInventorCompatActivity
   }
 
   /**
-   * Opens an asset for reading as an InputStream. If the asset cannot be found, an IOException will
+   * Opens an asset for reading as an InputStream. If the asset cannot be found,
+   * an IOException will
    * be raised.
    *
    * @param component The extension that is requesting an asset
-   * @param asset The asset filename
-   * @return A new input stream for the requested asset. The caller is responsible for closing the
-   * stream to prevent resource leaking.
+   * @param asset     The asset filename
+   * @return A new input stream for the requested asset. The caller is responsible
+   *         for closing the
+   *         stream to prevent resource leaking.
    * @throws IOException if the asset is not found or cannot be read
    */
-  @SuppressWarnings("unused")  // May be called by extensions
+  @SuppressWarnings("unused") // May be called by extensions
   public InputStream openAssetForExtension(Component component, String asset) throws IOException {
     return openAssetInternal(getAssetPathForExtension(component, asset));
   }
 
-  @SuppressWarnings("WeakerAccess")  // Visible for testing
+  @SuppressWarnings("WeakerAccess") // Visible for testing
   @VisibleForTesting
   InputStream openAssetInternal(String path) throws IOException {
     if (path.startsWith(ASSETS_PREFIX)) {

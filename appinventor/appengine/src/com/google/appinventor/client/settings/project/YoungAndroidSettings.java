@@ -1,5 +1,5 @@
-// -*- mode: java; c-basic-offset: 2; -*-
-// Copyright 2009-2011 Google, All Rights reserved
+// -*- mode: java; c-basic-offset: 2; -*- 
+// Copyright 2009-2011 Google, All rights reserved
 // Copyright 2011-2017 MIT, All rights reserved
 // Released under the Apache License, Version 2.0
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -25,6 +25,7 @@ public final class YoungAndroidSettings extends Settings {
   public YoungAndroidSettings(Project project) {
     super(SettingsConstants.PROJECT_YOUNG_ANDROID_SETTINGS);
 
+    // Existing properties
     addProperty(new EditableProperty(this, SettingsConstants.YOUNG_ANDROID_SETTINGS_ICON,
         "", EditableProperty.TYPE_INVISIBLE));
     addProperty(new EditableProperty(this,
@@ -80,6 +81,11 @@ public final class YoungAndroidSettings extends Settings {
         EditableProperty.TYPE_INVISIBLE));
     addProperty(new EditableProperty(this,
         SettingsConstants.YOUNG_ANDROID_SETTINGS_DEFAULTFILESCOPE, "App",
+        EditableProperty.TYPE_INVISIBLE));
+    
+    // Add the Package Name property
+    addProperty(new EditableProperty(this,
+        SettingsConstants.YOUNG_ANDROID_SETTINGS_PACKAGE_NAME, "",
         EditableProperty.TYPE_INVISIBLE));
   }
 }

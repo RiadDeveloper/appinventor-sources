@@ -1114,36 +1114,47 @@ Top-level component containing all other components in the program.
 {:.properties}
 
 {:id="Screen.AboutScreen" .text} *AboutScreen*
-: Information about the screen. It appears when "About this Application" is selected from the
- system menu. Use it to tell users about your app. In multiple screen apps, each screen has its
+: Information about the screen. It appears when "About this Application" is
+ selected from the
+ system menu. Use it to tell users about your app. In multiple screen apps,
+ each screen has its
  own `AboutScreen` info.
 
 {:id="Screen.AccentColor" .color .do} *AccentColor*
-: This is the accent color used for highlights and other user interface accents in newer
- versions of Android. Components affected by this property include dialogs created by the
+: This is the accent color used for highlights and other user interface accents
+ in newer
+ versions of Android. Components affected by this property include dialogs
+ created by the
  [`Notifier`](#Notifier), the [`DatePicker`](#DatePicker), and others.
 
 {:id="Screen.AlignHorizontal" .number} *AlignHorizontal*
-: A number that encodes how contents of the screen are aligned horizontally. The choices are:
+: A number that encodes how contents of the screen are aligned horizontally.
+ The choices are:
  `1` (left aligned), `3` (horizontally centered), `2` (right aligned).
 
 {:id="Screen.AlignVertical" .number} *AlignVertical*
-: A number that encodes how the contents of the arrangement are aligned vertically. The choices
- are: `1` (aligned at the top), `2` (vertically centered), `3` (aligned at the bottom). Vertical
+: A number that encodes how the contents of the arrangement are aligned
+ vertically. The choices
+ are: `1` (aligned at the top), `2` (vertically centered), `3` (aligned at the
+ bottom). Vertical
  alignment has no effect if the screen is scrollable.
 
 {:id="Screen.AppName" .text .wo .do} *AppName*
-: This is the display name of the installed application in the phone. If the `AppName` is blank,
+: This is the display name of the installed application in the phone. If the
+ `AppName` is blank,
  it will be set to the name of the project when the project is built.
 
 {:id="Screen.BackgroundColor" .color} *BackgroundColor*
 : Specifies the `Screen`'s background color as an alpha-red-green-blue
- integer.  If an [`BackgroundImage`](#Screen.BackgroundImage) has been set, the color
- change will not be visible until the [`BackgroundImage`](#Screen.BackgroundImage) is removed.
+ integer. If an [`BackgroundImage`](#Screen.BackgroundImage) has been set, the color
+ change will not be visible until the [`BackgroundImage`](#Screen.BackgroundImage) is
+ removed.
 
 {:id="Screen.BackgroundImage" .text} *BackgroundImage*
-: Specifies the path of the `Screen`'s background image. If there is both an `BackgroundImage`
- and a [`BackgroundColor`](#Screen.BackgroundColor) specified, only the `BackgroundImage` will be visible.
+: Specifies the path of the `Screen`'s background image. If there is both an
+ `BackgroundImage`
+ and a [`BackgroundColor`](#Screen.BackgroundColor) specified, only the `BackgroundImage` will
+ be visible.
 
 {:id="Screen.BigDefaultText" .boolean} *BigDefaultText*
 : When checked, all default size text will be increased in size.
@@ -1167,93 +1178,131 @@ Top-level component containing all other components in the program.
 : When checked, there will be high contrast mode turned on.
 
 {:id="Screen.Icon" .text .wo .do} *Icon*
-: The image used for your App's display icon should be a square png or jpeg image with dimensions
- up to 1024x1024 pixels. Larger images may cause compiling or installing the app to fail.
- The build server will generate images of standard dimensions for Android devices.
+: The image used for your App's display icon should be a square png or jpeg
+ image with dimensions
+ up to 1024x1024 pixels. Larger images may cause compiling or installing the
+ app to fail.
+ The build server will generate images of standard dimensions for Android
+ devices.
 
 {:id="Screen.OpenScreenAnimation" .text} *OpenScreenAnimation*
 : Sets the animation type for the transition of this form opening.
 
+{:id="Screen.PackageName" .text .wo .do} *PackageName*
+: This is the package name of the installed application in the phone. If the
+ `PackageName` is blank,
+ it will be set to the default package name (com.example.app) when the project
+ is built.
+
 {:id="Screen.Platform" .text .ro .bo} *Platform*
-: Gets the name of the underlying platform running the app. Currently, this is the text
+: Gets the name of the underlying platform running the app. Currently, this is
+ the text
  "Android". Other platforms may be supported in the future.
 
 {:id="Screen.PlatformVersion" .text .ro .bo} *PlatformVersion*
-: Gets the version number of the platform running the app. This is typically a dotted version
- number, such as 10.0. Any value can be returned, however, so you should take care to handle
- unexpected data. If the platform version is unavailable, the empty text will be returned.
+: Gets the version number of the platform running the app. This is typically a
+ dotted version
+ number, such as 10.0. Any value can be returned, however, so you should take
+ care to handle
+ unexpected data. If the platform version is unavailable, the empty text will
+ be returned.
 
 {:id="Screen.PrimaryColor" .color .do} *PrimaryColor*
-: This is the primary color used as part of the Android theme, including coloring the `Screen`'s
+: This is the primary color used as part of the Android theme, including
+ coloring the `Screen`'s
  title bar.
 
 {:id="Screen.PrimaryColorDark" .color .do} *PrimaryColorDark*
-: This is the primary color used when the Theme property is specified to be Dark. It applies to
+: This is the primary color used when the Theme property is specified to be
+ Dark. It applies to
  a number of elements, including the `Screen`'s title bar.
 
 {:id="Screen.ScreenOrientation" .text} *ScreenOrientation*
-: Declares the requested screen orientation, specified as a text value. Commonly used values are
- `landscape`, `portrait`, `sensor`, `user` and `unspecified`. See the Android developer
+: Declares the requested screen orientation, specified as a text value.
+ Commonly used values are
+ `landscape`, `portrait`, `sensor`, `user` and `unspecified`. See the Android
+ developer
  documentation for the complete list of possible
  [options](https://developer.android.com/reference/android/R.attr.html#screenOrientation).
 
 {:id="Screen.Scrollable" .boolean} *Scrollable*
-: When checked, there will be a vertical scrollbar on the screen, and the height of the
- application can exceed the physical height of the device. When unchecked, the application
+: When checked, there will be a vertical scrollbar on the screen, and the
+ height of the
+ application can exceed the physical height of the device. When unchecked, the
+ application
  height is constrained to the height of the device.
 
 {:id="Screen.ShowListsAsJson" .boolean .do} *ShowListsAsJson*
-: If `true`{:.logic.block} (the default), lists will be shown as strings in JSON/Python notation
- for example [1, "a", true]. If `false`{:.logic.block}, lists will be shown in the LISP
+: If `true`{:.logic.block} (the default), lists will be shown as strings in
+ JSON/Python notation
+ for example [1, "a", true]. If `false`{:.logic.block}, lists will be shown in
+ the LISP
  notation, for example (1 a true).
 
-   **Note:** This property appears only in Screen1 and the value for Screen1 determines the
+ **Note:** This property appears only in Screen1 and the value for Screen1
+ determines the
  behavior for all screens in the app.
 
 {:id="Screen.ShowStatusBar" .boolean} *ShowStatusBar*
-: The status bar is the topmost bar on the screen. This property reports whether the status bar
+: The status bar is the topmost bar on the screen. This property reports
+ whether the status bar
  is visible.
 
 {:id="Screen.Sizing" .text .wo .do} *Sizing*
-: If set to responsive (the default), screen layouts will use the actual resolution of the
- device. See the [documentation on responsive design](../other/responsiveDesign.html) in App
+: If set to responsive (the default), screen layouts will use the actual
+ resolution of the
+ device. See the [documentation on responsive
+ design](../other/responsiveDesign.html) in App
  Inventor for more information.
- If set to fixed, screen layouts will be created for a single fixed-size screen and autoscaled.
+ If set to fixed, screen layouts will be created for a single fixed-size
+ screen and autoscaled.
 
-   **Note:** This property appears on Screen1 only and controls the sizing for all screens in
+ **Note:** This property appears on Screen1 only and controls the sizing for
+ all screens in
  the app.
 
 {:id="Screen.Theme" .text .wo .do} *Theme*
-: Selects the theme for the application. Theme can only be set at compile time and the Companion
+: Selects the theme for the application. Theme can only be set at compile time
+ and the Companion
  will approximate changes during live development. Possible options are:
 
-   * `Classic`, which is the same as older versions of App Inventor;
-   * `Device Default`, which gives the same theme as the version of Android running on the
-     device and uses PrimaryColor for the Action Bar and has light buttons;
-   * `Black Title Text`, which is the `Device Default` theme but with black title text; and
-   * `Dark`, which is a dark version of the `Device Default` theme using `PrimaryColorDark` and
-     having dark grey components.
+ * `Classic`, which is the same as older versions of App Inventor;
+ * `Device Default`, which gives the same theme as the version of Android
+ running on the
+ device and uses PrimaryColor for the Action Bar and has light buttons;
+ * `Black Title Text`, which is the `Device Default` theme but with black
+ title text; and
+ * `Dark`, which is a dark version of the `Device Default` theme using
+ `PrimaryColorDark` and
+ having dark grey components.
 
 {:id="Screen.Title" .text} *Title*
 : Title property setter method: sets a new caption for the form in the
  form's title bar.
 
 {:id="Screen.TitleVisible" .boolean} *TitleVisible*
-: The title bar is the top gray bar on the screen. This property reports whether the title bar
+: The title bar is the top gray bar on the screen. This property reports
+ whether the title bar
  is visible.
 
 {:id="Screen.TutorialURL" .text .wo .do} *TutorialURL*
-: A URL which will be opened on the left side panel (which can be toggled once it is open). This
- is intended for projects that have an in-line tutorial as part of the project. For security
- reasons, only tutorials hosted on http://appinventor.mit.edu or linked to from our URL
- shortener (http://appinv.us) may be used here. Other URLs will be silently ignored.
+: A URL which will be opened on the left side panel (which can be toggled once
+ it is open). This
+ is intended for projects that have an in-line tutorial as part of the
+ project. For security
+ reasons, only tutorials hosted on http://appinventor.mit.edu or linked to
+ from our URL
+ shortener (http://appinv.us) may be used here. Other URLs will be silently
+ ignored.
 
 {:id="Screen.VersionCode" .number .wo .do} *VersionCode*
-: An integer value which must be incremented each time a new Android Application Package File
+: An integer value which must be incremented each time a new Android
+ Application Package File
  (APK) is created for the Google Play Store.
 
 {:id="Screen.VersionName" .text .wo .do} *VersionName*
-: A string which can be changed to allow Google Play Store users to distinguish between
+: A string which can be changed to allow Google Play Store users to distinguish
+ between
  different versions of the App.
 
 {:id="Screen.Width" .number .ro .bo} *Width*
@@ -1279,7 +1328,8 @@ Top-level component containing all other components in the program.
 : Event to handle when the app user has denied a needed permission.
 
 {:id="Screen.PermissionGranted"} PermissionGranted(*permissionName*{:.text})
-: Event to handle when the app user has granted a needed permission. This event is only run when permission is
+: Event to handle when the app user has granted a needed permission. This event
+ is only run when permission is
  granted in response to the [`AskForPermission`](#Screen.AskForPermission) method.
 
 {:id="Screen.ScreenOrientationChanged"} ScreenOrientationChanged()
@@ -1290,16 +1340,23 @@ Top-level component containing all other components in the program.
 {:.methods}
 
 {:id="Screen.AskForPermission" class="method"} <i/> AskForPermission(*permissionName*{:.text})
-: Ask the user to grant access to a sensitive permission, such as `ACCESS_FINE_LOCATION`. This
- block is typically used as part of a [`PermissionDenied`](#Screen.PermissionDenied)
+: Ask the user to grant access to a sensitive permission, such as
+ `ACCESS_FINE_LOCATION`. This
+ block is typically used as part of a
+ [`PermissionDenied`](#Screen.PermissionDenied)
  event to ask for permission. If the user grants permission, the
- [`PermissionGranted`](#Screen.PermissionGranted) event will be run. If the user denies permission, the
+ [`PermissionGranted`](#Screen.PermissionGranted) event will be run. If the user denies
+ permission, the
  [`PermissionDenied`](#Screen.PermissionDenied) event will be run.
 
-   **Note:** It is a best practice to only ask for permissions at the time they are needed,
- which App Inventor components will do when necessary. You should not use `AskForPermission`
- in your [`Initialize`](#Screen.Initialize) event unless access to that permission is critical to the
- behavior of your app and is needed up front, such as location services for a navigation app.
+ **Note:** It is a best practice to only ask for permissions at the time they
+ are needed,
+ which App Inventor components will do when necessary. You should not use
+ `AskForPermission`
+ in your [`Initialize`](#Screen.Initialize) event unless access to that permission is
+ critical to the
+ behavior of your app and is needed up front, such as location services for a
+ navigation app.
 
 {:id="Screen.HideKeyboard" class="method"} <i/> HideKeyboard()
 : Hide the soft keyboard

@@ -1,4 +1,4 @@
-// -*- mode: java; c-basic-offset: 2; -*-
+// -*- mode: java; c-basic-offset: 2; -*- 
 // Copyright © 2021 MIT, All rights reserved
 // Released under the Apache License, Version 2.0
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -12,6 +12,7 @@ import static com.google.appinventor.shared.settings.SettingsConstants.YOUNG_AND
 import static com.google.appinventor.shared.settings.SettingsConstants.YOUNG_ANDROID_SETTINGS_BLOCK_SUBSET;
 import static com.google.appinventor.shared.settings.SettingsConstants.YOUNG_ANDROID_SETTINGS_DEFAULTFILESCOPE;
 import static com.google.appinventor.shared.settings.SettingsConstants.YOUNG_ANDROID_SETTINGS_ICON;
+import static com.google.appinventor.shared.settings.SettingsConstants.YOUNG_ANDROID_SETTINGS_PACKAGE_NAME; // Import the package name constant
 import static com.google.appinventor.shared.settings.SettingsConstants.YOUNG_ANDROID_SETTINGS_PRIMARY_COLOR;
 import static com.google.appinventor.shared.settings.SettingsConstants.YOUNG_ANDROID_SETTINGS_PRIMARY_COLOR_DARK;
 import static com.google.appinventor.shared.settings.SettingsConstants.YOUNG_ANDROID_SETTINGS_SHOW_LISTS_AS_JSON;
@@ -49,6 +50,7 @@ public class YoungAndroidSettingsBuilder {
   private String primaryColorDark = "0";
   private String accentColor = "0";
   private String defaultFileScope = "App";
+  private String packageName = ""; // Add package name field
 
   public YoungAndroidSettingsBuilder() {
   }
@@ -89,6 +91,10 @@ public class YoungAndroidSettingsBuilder {
         YOUNG_ANDROID_SETTINGS_ACCENT_COLOR));
     defaultFileScope = Strings.nullToEmpty(settings.getSetting(PROJECT_YOUNG_ANDROID_SETTINGS,
         YOUNG_ANDROID_SETTINGS_DEFAULTFILESCOPE));
+    
+    // Add package name reading
+    packageName = Strings.nullToEmpty(settings.getSetting(PROJECT_YOUNG_ANDROID_SETTINGS,
+        YOUNG_ANDROID_SETTINGS_PACKAGE_NAME)); // Read package name from settings
   }
 
   /**
@@ -114,6 +120,15 @@ public class YoungAndroidSettingsBuilder {
     primaryColorDark = properties.getProperty("color.primary.dark", "");
     accentColor = properties.getProperty("color.accent", "");
     defaultFileScope = properties.getProperty("defaultfilescope", "");
+    
+    // Add package name reading from properties
+    packageName = properties.getProperty("packagename", ""); // Read package name from properties
+  }
+
+  // Setter for package name
+  public YoungAndroidSettingsBuilder setPackageName(String packageName) {
+    this.packageName = packageName;
+    return this;
   }
 
   public YoungAndroidSettingsBuilder setProjectName(String projectName) {
@@ -223,6 +238,10 @@ public class YoungAndroidSettingsBuilder {
     object.put(YOUNG_ANDROID_SETTINGS_PRIMARY_COLOR_DARK, primaryColorDark);
     object.put(YOUNG_ANDROID_SETTINGS_ACCENT_COLOR, accentColor);
     object.put(YOUNG_ANDROID_SETTINGS_DEFAULTFILESCOPE, defaultFileScope);
+    
+    // Add package name to JSON
+    object.put(YOUNG_ANDROID_SETTINGS_PACKAGE_NAME, packageName); // Include package name in JSON output
+
     JSONObject wrapper = new JSONObject();
     wrapper.put(PROJECT_YOUNG_ANDROID_SETTINGS, object);
     return wrapper.toString();
@@ -255,6 +274,10 @@ public class YoungAndroidSettingsBuilder {
     addPropertyIfSet(result, "color.primary.dark", primaryColorDark);
     addPropertyIfSet(result, "color.accent", accentColor);
     addPropertyIfSet(result, "defaultfilescope", defaultFileScope);
+    
+    // Add package name to properties
+    addPropertyIfSet(result, "packagename", packageName); // Include package name in properties output
+
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     try {
       result.store(out, "");
@@ -299,6 +322,7 @@ public class YoungAndroidSettingsBuilder {
       result &= other.primaryColorDark.equals(primaryColorDark);
       result &= other.accentColor.equals(accentColor);
       result &= other.defaultFileScope.equals(defaultFileScope);
+      result &= other.packageName.equals(packageName); // Compare package names
       return result;
     }
     return false;

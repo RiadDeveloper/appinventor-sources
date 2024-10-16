@@ -120,6 +120,9 @@ public final class Project {
   private static final String DEFAULT_COLOR_ACCENT = "#00728A";
   private static final String DEFAULT_COLOR_THEME = "Classic";
 
+
+  private static final String PACKAGENAME_TAG = "packagename"; // Add package name tag
+
   // Table containing project properties
   private Properties properties;
 
@@ -294,6 +297,28 @@ public final class Project {
   public void setAName(String aname) {
     properties.setProperty(ANAMETAG, aname);
   }
+
+
+
+
+  /**
+   * Returns the package name.
+   *
+   * @return package name
+   */
+  public String getPackageName() {
+    return properties.getProperty(PACKAGENAME_TAG, ""); // Return the package name, default to an empty string
+  }
+
+  /**
+   * Sets the package name.
+   *
+   * @param packageName package name
+   */
+  public void setPackageName(String packageName) {
+    properties.setProperty(PACKAGENAME_TAG, packageName); // Set the package name in properties
+  }
+
 
   /**
    * Returns the minimum SDK desired for the app.
