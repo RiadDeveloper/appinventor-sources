@@ -1,8 +1,0 @@
-@@
- import sys
- 
-+_HAS_DYNAMIC_ATTRIBUTES = True
-+
- try:
-     import chardet
- except ImportError:
