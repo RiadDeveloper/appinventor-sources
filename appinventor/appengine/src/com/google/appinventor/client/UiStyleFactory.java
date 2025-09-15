@@ -21,14 +21,8 @@ public class UiStyleFactory {
 
   @UiTemplate("Ode.ui.xml")
   interface OdeUiBinder extends UiBinder<FlowPanel, Ode> {}
-  @UiTemplate("style/neo/Ode.ui.xml")
-  interface OdeUiBinderNeo extends UiBinder<FlowPanel, Ode> {}
 
   public FlowPanel createOde(Ode target, String style) {
-    if (style.equals("modern")) {
-      OdeUiBinderNeo uibinder = GWT.create(OdeUiBinderNeo.class);
-      return uibinder.createAndBindUi(target);
-    }
     OdeUiBinder uibinder = GWT.create(OdeUiBinder.class);
     return uibinder.createAndBindUi(target);
   }

@@ -44,9 +44,6 @@ import com.google.appinventor.client.local.LocalTokenAuthService;
 import com.google.appinventor.client.local.LocalUserInfoService;
 import com.google.appinventor.client.settings.Settings;
 import com.google.appinventor.client.settings.user.UserSettings;
-import com.google.appinventor.client.style.neo.ImagesNeo;
-import com.google.appinventor.client.style.neo.DarkModeImagesNeo;
-import com.google.appinventor.client.style.neo.UiFactoryNeo;
 import com.google.appinventor.client.tracking.Tracking;
 import com.google.appinventor.client.utils.HTML5DragDrop;
 import com.google.appinventor.client.utils.PZAwarePositionCallback;
@@ -143,7 +140,7 @@ public class Ode implements EntryPoint {
 
   // Application level image bundle
   private static Images IMAGES;
-  private static boolean useNeoStyle = false;
+  private static boolean useModernStyle = false;
   private static boolean useDarkMode = false;
 
   // ProjectEditor registry
@@ -930,47 +927,26 @@ public class Ode implements EntryPoint {
 
   private Promise<Void> handleUiPreference() {
     return new Promise<>((ResolveCallback<Void> res, RejectCallback rej) -> {
-      useNeoStyle = Ode.getUserNewLayout();
+      useModernStyle = Ode.getUserNewLayout();
       useDarkMode = Ode.getUserDarkThemeEnabled();
-      if (useNeoStyle) {
-        GWT.runAsync(new RunAsyncCallback() {
-          @Override
-          public void onFailure(Throwable reason) {
-            rej.apply(new Promise.WrappedException(reason));
-          }
+      GWT.runAsync(new RunAsyncCallback() {
+        @Override
+        public void onFailure(Throwable reason) {
+          rej.apply(new Promise.WrappedException(reason));
+        }
 
-          @Override
-          public void onSuccess() {
-            if (useDarkMode) {
-              IMAGES = GWT.create(DarkModeImagesNeo.class);
-            } else {
-              IMAGES = GWT.create(ImagesNeo.class);
-            }
-            RootPanel.get().addStyleName("neo");
-            uiFactory = new UiFactoryNeo();
-            res.apply(null);
+        @Override
+        public void onSuccess() {
+          if (useDarkMode) {
+            IMAGES = GWT.create(DarkModeImages.class);
+          } else {
+            IMAGES = GWT.create(Images.class);
           }
-        });
-      } else {
-        GWT.runAsync(new RunAsyncCallback() {
-          @Override
-          public void onFailure(Throwable reason) {
-            rej.apply(new Promise.WrappedException(reason));
-          }
-
-          @Override
-          public void onSuccess() {
-            if (useDarkMode) {
-              IMAGES = GWT.create(DarkModeImages.class);
-            } else {
-              IMAGES = GWT.create(Images.class);
-            }
-            RootPanel.get().addStyleName("classic");
-            uiFactory = new UiStyleFactory();
-            res.apply(null);
-          }
-        });
-      }
+          RootPanel.get().addStyleName("classic");
+          uiFactory = new UiStyleFactory();
+          res.apply(null);
+        }
+      });
     });
   }
 
@@ -1016,20 +992,11 @@ public class Ode implements EntryPoint {
     // TODO: Tidy up user preference variable
     projectListbox = ProjectListBox.create(uiFactory);
     String layout;
-    if (Ode.getUserNewLayout()) {
-      layout = "modern";
-      if (Ode.getUserDarkThemeEnabled()) {
-        style = Resources.INSTANCE.stylemodernDark();
-      } else {
-        style = Resources.INSTANCE.stylemodernLight();
-      }
+    layout = "classic";
+    if (Ode.getUserDarkThemeEnabled()) {
+      style = Resources.INSTANCE.styleclassicDark();
     } else {
-      layout = "classic";
-      if (Ode.getUserDarkThemeEnabled()) {
-        style = Resources.INSTANCE.styleclassicDark();
-      } else {
-        style = Resources.INSTANCE.styleclassicLight();
-      }
+      style = Resources.INSTANCE.styleclassicLight();
     }
 
     style.ensureInjected();
@@ -1726,7 +1693,7 @@ public class Ode implements EntryPoint {
       return null;
     });
     if (getShowUIPicker()) {
-      TutorialPopup popup = new TutorialPopup(MESSAGES.neoWelcomeMessage(), () -> {
+      TutorialPopup popup = new TutorialPopup(MESSAGES.modernWelcomeMessage(), () -> {
         setUserNewLayout(false);
         saveUserDesignSettings();
       });
@@ -2689,17 +2656,6 @@ public class Ode implements EntryPoint {
     })
     Style styleclassicDark();
 
-    @Source({
-      "com/google/appinventor/client/style/neo/lightNeo.css",
-      "com/google/appinventor/client/style/neo/neo.css"
-    })
-    Style stylemodernLight();
-
-    @Source({
-      "com/google/appinventor/client/style/neo/darkNeo.css",
-      "com/google/appinventor/client/style/neo/neo.css"
-    })
-    Style stylemodernDark();
 
     public interface Style extends CssResource {
     }
