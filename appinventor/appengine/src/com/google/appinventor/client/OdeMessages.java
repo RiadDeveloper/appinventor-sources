@@ -816,7 +816,7 @@ public interface OdeMessages extends Messages, ComponentTranslations {
   @Description("Select new or classic style")
   String selectStyle();
 
-  @DefaultMessage("Modern")
+  @DefaultMessage("Neo")
   @Description("Switch to enable new layouts")
   String enableNewLayout();
 
@@ -1152,7 +1152,7 @@ public interface OdeMessages extends Messages, ComponentTranslations {
   String previewAndroid5Devices();
 
   @DefaultMessage("iOS 13")
-  @Description("Listbox (monitor) controlling whether to display iOS Theme in modern layout")
+  @Description("Listbox (monitor) controlling whether to display iOS Theme in Neo layout")
   String previewIOS13();
 
   @DefaultMessage("Android 3.0-4.x (Holo)")
@@ -1160,7 +1160,7 @@ public interface OdeMessages extends Messages, ComponentTranslations {
   String previewAndroidHolo();
 
   @DefaultMessage("Android 5+ (Material)")
-  @Description("Listbox (monitor) controlling whether to display Android Material Theme for modern layout")
+  @Description("Listbox (monitor) controlling whether to display Android Material Theme for Neo Layout")
   String previewAndroidMaterial();
 
   @DefaultMessage("iOS 13 Devices")
@@ -5820,7 +5820,7 @@ public interface OdeMessages extends Messages, ComponentTranslations {
   @Description("Set x-axis label values Type as Time")
   String labelTime();
 
-  @DefaultMessage("Welcome to App Inventor! If you are looking for the classic App Inventor look, you can switch in the User Interface Settings, or <a href=\"\">click here</a>.")
-  @Description("Message shown in the info popup when the user first opens the modern UI.")
-  String modernWelcomeMessage();
+  @DefaultMessage("Welcome to App Inventor Neo! If you are looking for the classic App Inventor look, you can switch in the User Interface Settings, or <a href=\"\">click here</a>.")
+  @Description("Message shown in the info popup when the user first opens the Neo UI.")
+  String neoWelcomeMessage();
 }

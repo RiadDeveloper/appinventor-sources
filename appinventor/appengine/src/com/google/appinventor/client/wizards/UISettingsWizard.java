@@ -10,6 +10,7 @@ import static com.google.appinventor.client.Ode.MESSAGES;
 import com.google.appinventor.client.Ode;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -37,6 +38,8 @@ public class UISettingsWizard {
   @UiField protected Label introText;
   @UiField protected Button topInvisible;
   @UiField protected Button bottomInvisible;
+  @UiField protected InputElement classicRadioButton;
+  @UiField protected InputElement modernRadioButton;
   @UiField protected ListBox themeSelector;
   boolean userLayoutPreference;
   boolean firstUIChoice = false;
@@ -53,6 +56,11 @@ public class UISettingsWizard {
     bindUI();
     firstUIChoice = intro;
     userLayoutPreference = Ode.getUserNewLayout();
+    if (intro || userLayoutPreference) {
+      modernRadioButton.setChecked(true);
+    } else {
+      classicRadioButton.setChecked(true);
+    }
     themeSelector.addItem(MESSAGES.lightMode(), "light");
     themeSelector.addItem(MESSAGES.darkMode(), "dark");
     themeSelector.setSelectedIndex(Ode.getUserDarkThemeEnabled() ? 1 : 0);
@@ -78,7 +86,7 @@ public class UISettingsWizard {
     // animation state from GWT.
     Scheduler.get().scheduleFixedDelay(() -> {
       uiDialog.center();
-      applyButton.setFocus(true);
+      classicRadioButton.focus();
       return false;
     }, 350);
   }
@@ -100,7 +108,7 @@ public class UISettingsWizard {
     if (firstUIChoice) {
       Ode.setShowUIPicker(false);
     }
-    Ode.setUserNewLayout(false); // Always use classic layout
+    Ode.setUserNewLayout(modernRadioButton.isChecked());
     Ode.setUserDarkThemeEnabled("dark".equals(themeSelector.getSelectedValue()));
     Ode.saveUserDesignSettings();
     hide();
@@ -113,7 +121,7 @@ public class UISettingsWizard {
 
   @UiHandler("bottomInvisible")
   protected void FocusFirst(FocusEvent event) {
-     themeSelector.setFocus(true);
+     classicRadioButton.focus();
   }
 
   @UiHandler("themeSelector")
